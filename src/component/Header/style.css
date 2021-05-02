@@ -1,0 +1,38 @@
+.header-container{
+    display: flex;
+    
+}
+
+.header-action button{
+    outline: none;
+    background-color: rgb(207, 207, 207);
+    padding: 5px 10px;
+    border: none;
+}
+.header-action button:hover{
+    background-color: rgb(206, 224, 190);
+}
+
+.header-action div{
+    display: none;
+    border-radius: 0px 0px 5px 5px;
+    position: absolute;
+    z-index: 10;
+}
+
+.header-action:hover div{
+    display: block;
+    background-color: grey;
+}
+
+.header-action a{
+    display: block;
+    text-decoration: none;
+    padding: 5px 10px;
+    color: white;
+    font-size: 14px;
+    box-sizing: border-box;
+    border-top:solid 1px rgba(255, 255, 255,0.1);
+    border-bottom: 1px solid black;
+    line-height: 30px;
+}
