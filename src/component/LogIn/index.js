@@ -4,8 +4,13 @@ import {apiLogin} from '../../redux/LogIn/action'
 import Loading from '../Loading'
 import {toast} from 'react-toastify'
 import  './style.css'
+import {useHistory} from 'react-router-dom'
+
 
 const LogIn = (props) => {
+
+    const history = useHistory()
+
     useEffect(() => {
         console.log(props.loginState);
 
@@ -46,8 +51,9 @@ const LogIn = (props) => {
                 progress: undefined,
                 type: 'success'
                 })
-        }
 
+                history.push('/')
+        }
         
     }, [props.loginState])
 

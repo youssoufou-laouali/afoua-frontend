@@ -1,0 +1,59 @@
+.accueil-form{
+    display: flex;
+    text-align: center;
+}
+.accueil-form input{
+    color: white;
+}
+
+.accueil-container{
+    background-color: #191919;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.accueil-patient{
+    height: 500px;
+    overflow-y: auto;
+    border: 2px solid rgba(184, 184, 184, 0.2);
+}
+
+.flex{
+    display: flex;
+    justify-content: center;
+}
+
+.list-container-patient{
+    color: white;
+    text-align: center;
+    border: 1px dashed #3498db;
+    border-radius: 10px;
+    margin: 10px 5px;
+    cursor: pointer;
+}
+
+.list-container-patient h4{
+    color: #3498db;
+}
+
+.list-container-patient span{
+    color: white;
+}
+
+.accueil-add-patient{
+    margin-top: 50px;
+
+}
+.btn-add-patient{
+    padding: 7px 15px;
+    border: 2px dotted #3498db;
+    background-color: rgba(113, 113, 114, 0.5);
+    color: white;
+    font-size: 15px;
+    border-radius: 15px;
+    cursor: pointer;
+}
