@@ -1,0 +1,45 @@
+.listContainerInteraction{
+    margin: 20px auto;
+    text-align: center;
+    background-color: #3498db;
+    color: rgb(214, 214, 214);
+    width: 500px;
+    border-radius: 10px;
+    border: wheat 2px dotted;
+    position: relative;
+
+}
+
+.flexInteraction{
+    display: flex;
+    justify-content: space-around;
+}
+
+.interactionOverlaye{
+    display: flex;
+    position: absolute;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(0, 0, 0,0.5);
+    width: 500px;
+    height: 70px;
+    top: 5px;
+    display: none;
+
+}
+
+.interactionOverlaye button{
+    background-color: rgb(179, 241, 245);
+    color: #3498db;
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+}
+
+.listContainerInteraction:hover .interactionOverlaye{
+    display: block;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

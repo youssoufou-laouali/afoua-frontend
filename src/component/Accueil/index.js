@@ -23,6 +23,21 @@ const Accueil = () => {
         })
     }, [])
 
+    useEffect(() => {
+        getInteraction()
+    }, [])
+
+    const [interaction, setInteraction] = useState([])
+    const getInteraction= ()=>{
+        axios.get('/api/interaction/perception')
+        .then(res=>{
+            console.log(res.data.interaction)
+            setInteraction(res.data.interaction)
+        })
+        .catch(err=> {
+            console.log(err.response.data);
+        })
+    }
 
     const handleSubmit= (e)=>{
         e.preventDefault()
@@ -226,6 +241,7 @@ const Accueil = () => {
 
     const openSetPatient= (id)=>{
         setIdPatient(id);
+        setPatient({...patient, demande:''})
         setSetAskPatient(true)
     }
 
@@ -340,11 +356,18 @@ const Accueil = () => {
                                         
                                         <div>
                                             <label htmlFor='demande'>Demande</label> 
-                                            <input type="text" id='demande' value={accueil.demande} onChange={(e)=>handleChangeAccueil(e)} placeholder='Demande du patient' />
+                                            <select id='demande' value={accueil.demande} onChange={(e)=>handleChangeAccueil(e)}>
+                                                <option value='' >Demande</option>
+                                                {
+                                                    interaction!==[] && interaction.map((el, index)=>(
+                                                        <option key={index} value={el.label}>{el.label}</option>
+                                                    ))
+                                                }
+                                            </select>
                                         </div>
                                         <div>
-                                            <label htmlFor='assurance'>Assurance</label> 
-                                            <input type="text" value={accueil.assurancePriseEnCharge} placeholder="Nom de l'assurance prise en charge" onChange={(e)=>handleChangeAccueil(e)} id='assurance' />
+                                            <label htmlFor='assurencePriseEnCharge'>Assurance</label> 
+                                            <input type="text" value={accueil.assurencePriseEnCharge} placeholder="Nom de l'assurance prise en charge" onChange={(e)=>handleChangeAccueil(e)} id='assurencePriseEnCharge' />
                                         </div>
                                     </div>
                                     {
@@ -371,11 +394,18 @@ const Accueil = () => {
                                         
                                         <div>
                                             <label htmlFor='demande'>Demande</label> 
-                                            <input type="text" id='demande' value={accueil.demande} onChange={(e)=>handleChangeAccueil(e)} placeholder='Demande du patient' />
+                                            <select id='demande' value={accueil.demande} onChange={(e)=>handleChangeAccueil(e)}>
+                                                <option value='' >Demande</option>
+                                                {
+                                                    interaction!==[] && interaction.map((el, index)=>(
+                                                        <option key={index} value={el.label}>{el.label}</option>
+                                                    ))
+                                                }
+                                            </select>
                                         </div>
                                         <div>
-                                            <label htmlFor='assurance'>Assurance</label> 
-                                            <input type="text" value={accueil.assurancePriseEnCharge} placeholder="Nom de l'assurance prise en charge" onChange={(e)=>handleChangeAccueil(e)} id='assurance' />
+                                            <label htmlFor='assurencePriseEnCharge'>Assurance</label> 
+                                            <input type="text" value={accueil.assurencePriseEnCharge} placeholder="Nom de l'assurance prise en charge" onChange={(e)=>handleChangeAccueil(e)} id='assurencePriseEnCharge' />
                                         </div>
                                     </div>
                                     {

@@ -1,0 +1,23 @@
+.listMedecin{
+    border-top: 1px solid rgba(225,225,225,0.1);
+    border-bottom:1px solid black ;
+    padding: 10px;
+}
+
+.listMedecin h3{
+    margin: 0;
+    color: rgb(202, 197, 202);
+}
+
+.listMedecin h3 span{
+    color: white;
+}
+
+.listMedecinContainer{
+    background-color: rgb(6, 46, 0);
+    color: rgb(202, 197, 202);
+    width: 400px;
+    text-align: center;
+    height: 90vh;
+    overflow-y: auto;
+}

@@ -9,6 +9,8 @@ import Profil from '../component/Profil'
 import Reset from '../component/Password'
 import ListAgent from '../component/ListAgent'
 import Perception from '../component/Perception'
+import Interaction from '../component/Interaction'
+import Medecin from '../component/Medecin'
 
 const Landing = () => {
 
@@ -24,6 +26,8 @@ const Landing = () => {
             <Route exact path='/password' component={Reset} />
             <Route exact path='/list' component={ListAgent} />
             <Route exact path='/perception' component={Perception} />
+            <Route exact path='/interaction' component={Interaction} />
+            <Route exact path='/medecin' component={Medecin} />
         </Router>
         </>
     )
