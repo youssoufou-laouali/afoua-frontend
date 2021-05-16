@@ -1,0 +1,101 @@
+.inputAnimated{
+    display: inline-block;
+    position: relative;
+    margin:5px 10px;
+    min-width: 150px;
+}
+
+.inputAnimated input{
+    border: 0;
+    border-bottom: 2px solid #333;
+    font-size: 18px;
+    padding-top: 15px;
+    outline: none;
+    transition: all 0.2s ease-in;
+    background: transparent;
+}
+
+.inputAnimated input:focus,
+.inputAnimated input:valid{
+    border-bottom-color: darkcyan;
+}
+
+.inputAnimated label{
+  font-size: 18px;
+  position: absolute;
+  top: 15px;
+  left: 0;
+  
+  color: wheat;
+}
+
+.inputAnimated input:focus + label,
+.inputAnimated input:valid + label {
+    color: darkcyan;
+    transform: translateY(-20px);
+    font-size: 14px;
+    transition: all 0.5s ease;
+}
+
+.A4{
+    width: 210mm;
+    height: 297mm;
+    box-shadow: rgb(128, 128, 128) 0px 0px 5px;
+    padding: 70px 80px;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    text-align: left !important;
+}
+
+.A4 h3, .A4 h2, .A4 h4{
+    text-align: center;
+}
+
+.A4 .right{
+    width: 500px;
+    margin-left: auto;
+    margin-top: 50px;
+    margin-bottom: 100px;
+    text-align: center;
+}
+
+.A4 h2{
+    text-align: center;
+    margin: 70px;
+}
+
+.submitA4{
+    padding: 5px 15px;
+    outline: none;
+    border: none;
+    background-color: darkcyan;
+    color: white;
+    cursor: pointer;
+    font-size: larger;
+    margin-top: 50px;
+    transition: .5s ease-in-out;
+    display: block;
+    position: relative;
+    left: 45%;
+    bottom: 20px;
+    
+}
+.submitA4:hover{
+    background-color: rgb(5, 255, 255);
+    color: black;
+    border-radius: 10px;
+    border: black 1px solid;
+}
+
+.A4 select{
+    min-width: 150px;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid darkcyan ;
+    border-radius: 0;
+    color: black;
+}
+
+.A4 option{
+    background-color: white;
+}

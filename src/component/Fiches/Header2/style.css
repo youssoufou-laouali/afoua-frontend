@@ -1,0 +1,16 @@
+.header2Container{
+    text-align: center;
+}
+
+.header2Logo{
+    display: flex;
+    width: 40%;
+    margin: auto;
+    border-bottom: 2px solid grey;
+    justify-content: space-between;
+}
+
+.header2hr{
+    width: 100vw;
+    border-bottom: 5px solid grey;
+}

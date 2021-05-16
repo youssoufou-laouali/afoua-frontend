@@ -122,7 +122,7 @@ const Accueil = () => {
             axios.post('/api/accueil/add', {...accueil, patient: response.data._id})
             .then(res=>{
                 dispatch(loadingFalse())
-                console.log(res.data);
+                console.log('resultat ' + res);
 
                 socket.emit("accueil", res.data)
 

@@ -80,7 +80,7 @@ const Perception = () => {
 
     const handleSubmit=(e)=>{
         e.preventDefault()
-        
+        console.log(patient);
         dispatch(loadingTrue())
         axios.post('/api/accueil/perception', patient)
         .then(res=> {
@@ -97,6 +97,7 @@ const Perception = () => {
             dispatch(loadingFalse())
             getMurAccueil()
             setopenModal(false)
+            socket.emit('perception', res.data)
         })
         .catch(err=>{
             dispatch(loadingFalse())
@@ -125,7 +126,7 @@ const Perception = () => {
 
     return (
         <div className='perception'>
-            
+            {console.log(perceptionData)}
             <div className='list'>
             {
             perceptionData !== [] &&(

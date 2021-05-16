@@ -2,6 +2,7 @@
     border-top: 1px solid rgba(225,225,225,0.1);
     border-bottom:1px solid black ;
     padding: 10px;
+    cursor: pointer;
 }
 
 .listMedecin h3{
@@ -20,4 +21,73 @@
     text-align: center;
     height: 90vh;
     overflow-y: auto;
+}
+
+.buttonAddContainer{
+    position: fixed;
+    bottom: 40px;
+    right: 10px;
+    padding: 20px;
+    text-align: center;
+    
+}
+
+.buttonAddContainer ul{
+    display: none;
+    opacity: 0;
+    list-style: none;
+    transition: opacity 2s;
+    
+}
+
+.buttonAddContainer:hover ul{
+    display: block;
+    opacity: 1;
+}
+
+.buttonAddContainer ul li{
+    display: block;
+    color: white;
+    background-color: rgb(6, 46, 0);
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 5px;
+    padding: 5px 10px;
+}
+
+.buttonAddContainer ul li:hover{
+    background-color:rgb(32, 214, 4) ;
+    color: rgb(59, 55, 47);
+}
+
+.buttonAdd{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    font-size: 30px;
+    background-color: rgb(21, 136, 3);
+    color: white;
+    border-radius: 50%;
+    padding: 12px 20px;
+    cursor: pointer;  
+}
+
+
+.printBoutton{
+    padding: 5px 15px;
+    outline: none;
+    border: none;
+    background-color: darkcyan;
+    color: white;
+    cursor: pointer;
+    font-size: larger;
+    position: fixed;
+    bottom: 50%;
+    right: 50px;
+}
+.printBoutton:hover{
+    background-color: rgb(5, 255, 255);
+    color: black;
+    border-radius: 20px;
+    border: rgb(0, 0, 0) 2px dotted;
 }
