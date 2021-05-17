@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react'
 import Header1 from '../Header1'
 import axios from 'axios'
 
-const CertificatDeVisiteEtContreVisiteMedicale = ({namePatient, lastNamePatient, dateDeNaissance, lieuDeNaissance, idPatient, module, nameAgent, lastNameAgent, AgentNames, changeAgent2, agent2}) => {
+const CertificatDeVisiteEtContreVisiteMedicale = ({closingCVCVM, printCVCM, namePatient, lastNamePatient, dateDeNaissance, lieuDeNaissance, idPatient, module, nameAgent, lastNameAgent, AgentNames, changeAgent2, agent2}) => {
     const [naissance, setNaissance] = useState('')
     
     const date = new Date()
@@ -16,7 +16,20 @@ const CertificatDeVisiteEtContreVisiteMedicale = ({namePatient, lastNamePatient,
             patient: idPatient,
             createdBy2: agent2
         })
-        .then(res=> console.log(res.data))
+        .then(res=>{
+             console.log(res.data.certificatVisiteContreVisite)
+             axios.post('/module/update', {
+                certificatVisiteContreVisite: res.data.certificatVisiteContreVisite._id,
+                module: module
+             })
+             .then(reponse=>{
+                closingCVCVM()
+                printCVCM()
+             })
+             .catch(errors=>{
+                console.log(errors.response.data);
+             })
+            })
         .catch(err=> console.log(err))
     }
 

@@ -5,6 +5,7 @@ import './style.css'
 import CerificatDeVisiteMedicale from '../Fiches/CerificatDeVisiteMedicale'
 import PrintCertificatDeVisiteMedical from '../Fiches/CerificatDeVisiteMedicale/PrintCertificatDeVisiteMedical'
 import CertificatDeVisiteEtContreVisiteMedicale from '../Fiches/CertificatDeVisiteEtContreVisiteMedicale'
+import PrintCertificatDeVisiteEtContreVisiteMedicale from '../Fiches/CertificatDeVisiteEtContreVisiteMedicale/PrintCertificatDeVisiteEtContreVisiteMedicale'
 import Modal from '../Modal'
 import {toast} from 'react-toastify'
 import ReactToPrint from "react-to-print";
@@ -40,10 +41,28 @@ const Medecin = () => {
         setAgent2(id)
     }
     const [closeCVCVM, setCloseCVCVM] = useState(false)
+    const [CVCM, setPrintCVCM] = useState(false)
     const refCertificatDeVisiteContreVisiteMedicale = useRef()
     const closingCVCVM=()=>{
         setCloseCVCVM(!closeCVCVM)
     }
+
+    //Decharge
+    const [responsable, setResponsable] = useState('')
+    const handleChangeResponsableDecharge=(e)=>{
+        setResponsable(e.target.value)
+    }
+    const [typeResponsable, setTypeResponsable] = useState({
+        malade: false, parent: false, accompagnant: false
+        })
+    const handleChangeTypeResponsableDecharge=(e)=>{
+        setTypeResponsable({...typeResponsable, [e.target.id]: e.target.checked})
+    }
+
+    const printCVCM= ()=>{
+        setPrintCVCM(!CVCM)
+    }
+
 
 
     const getGeant=()=>{
@@ -126,7 +145,7 @@ const Medecin = () => {
                         <ul>
                             <li onClick={()=>closing()}>Certificat De Visite Medicale</li>
                             <li onClick={()=>closingCVCVM()}>Certificat De Visite et Contre Visite Medicale</li>
-                            <li>Billet De Sortie</li>
+                            <li>Decharge</li>
                             <li>Certificat Medical</li>
                         </ul>
                     </div>)
@@ -206,8 +225,36 @@ const Medecin = () => {
                             AgentNames={AgentNames}
                             changeAgent2={changeAgent2}
                             agent2={agent2}
+                            closingCVCVM={closingCVCVM}
+                            printCVCM={printCVCM}
                         />
                     </Modal>)
+                }
+
+                {
+                    CVCM && (
+                        <Modal close={printCVCM}>
+
+                            <ReactToPrint
+                                trigger={() => <button className="printBoutton">Imprimer</button>}
+                                content={() => refCertificatDeVisiteContreVisiteMedicale.current}
+                            />
+
+                            <PrintCertificatDeVisiteEtContreVisiteMedicale
+                            namePatient={patientSelect.patientName}
+                            lastNamePatient={patientSelect.patientLastName}
+                            dateDeNaissance={patientSelect.dateDeNaissance}
+                            lieuDeNaissance={patientSelect.lieuDeNaissance}
+                            idPatient={patientSelect.patientId}
+                            module={patientSelect.module}
+                            nameAgent={nameAgent}
+                            lastNameAgent={lastNameAgent}
+                            AgentNames={AgentNames}
+                            agent2={agent2}
+                            ref={refCertificatDeVisiteContreVisiteMedicale}
+                            />
+                        </Modal>
+                    )
                 }
 
                 
