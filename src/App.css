@@ -1,3 +1,14 @@
 body{
     font-family: sans-serif;
 }
+
+.css-2b097c-container{
+    width: 300px !important;
+    margin-top: 10px;
+    
+}
+.css-yk16xz-control{
+    border-radius: 20px !important;
+    background-color: transparent !important;
+    border: 2px solid #3498db !important;
+}

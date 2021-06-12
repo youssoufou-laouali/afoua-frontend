@@ -6,6 +6,7 @@ import {useDispatch} from 'react-redux'
 import ListPatient from './ListPatient'
 import {toast} from 'react-toastify'
 import Modal from '../Modal'
+import SelectMultiple from '../SelectMultiple'
 import { socket } from "../Header";
 
 
@@ -113,8 +114,9 @@ const Accueil = () => {
     //Add patient
     const createPatient= (e)=>{
         e.preventDefault()
-        dispatch(loadingTrue())
 
+        dispatch(loadingTrue())
+        console.log('accueil', accueil);
         axios.post('/api/patient/add', patient)
         .then(response=>{
             
@@ -122,8 +124,6 @@ const Accueil = () => {
             axios.post('/api/accueil/add', {...accueil, patient: response.data._id})
             .then(res=>{
                 dispatch(loadingFalse())
-                console.log('resultat ' + res);
-
                 socket.emit("accueil", res.data)
 
                 toast("Le dossier du patient est prêt pour sa demande", {
@@ -241,10 +241,13 @@ const Accueil = () => {
 
     const openSetPatient= (id)=>{
         setIdPatient(id);
-        setPatient({...patient, demande:''})
+        setPatient({...patient, demande:[]})
         setSetAskPatient(true)
     }
 
+    const _accueilDemandeSet=(el)=>{
+        setAccueil({...accueil, demande: el})
+    }
 
     const handlePatientAsk= (e)=>{
 
@@ -353,25 +356,18 @@ const Accueil = () => {
                                     </div>
 
                                     <div className="profil-flex">
-                                        
                                         <div>
                                             <label htmlFor='demande'>Demande</label> 
-                                            <select id='demande' value={accueil.demande} onChange={(e)=>handleChangeAccueil(e)}>
-                                                <option value='' >Demande</option>
-                                                {
-                                                    interaction!==[] && interaction.map((el, index)=>(
-                                                        <option key={index} value={el.label}>{el.label}</option>
-                                                    ))
-                                                }
-                                            </select>
+                                            <SelectMultiple data={interaction} setDemande={_accueilDemandeSet} />
                                         </div>
+                                        
                                         <div>
                                             <label htmlFor='assurencePriseEnCharge'>Assurance</label> 
                                             <input type="text" value={accueil.assurencePriseEnCharge} placeholder="Nom de l'assurance prise en charge" onChange={(e)=>handleChangeAccueil(e)} id='assurencePriseEnCharge' />
                                         </div>
                                     </div>
                                     {
-                                        accueil.demande == '' ? (
+                                        accueil.demande == [] ? (
                                             <input className="input-submit" style={{backgroundColor: 'grey'}} value='créer'  desabled />
                                         ):(
                                             <input className="input-submit" value='créer' type="submit" />
@@ -394,22 +390,16 @@ const Accueil = () => {
                                         
                                         <div>
                                             <label htmlFor='demande'>Demande</label> 
-                                            <select id='demande' value={accueil.demande} onChange={(e)=>handleChangeAccueil(e)}>
-                                                <option value='' >Demande</option>
-                                                {
-                                                    interaction!==[] && interaction.map((el, index)=>(
-                                                        <option key={index} value={el.label}>{el.label}</option>
-                                                    ))
-                                                }
-                                            </select>
+                                            <SelectMultiple data={interaction} setDemande={_accueilDemandeSet} />
                                         </div>
                                         <div>
                                             <label htmlFor='assurencePriseEnCharge'>Assurance</label> 
                                             <input type="text" value={accueil.assurencePriseEnCharge} placeholder="Nom de l'assurance prise en charge" onChange={(e)=>handleChangeAccueil(e)} id='assurencePriseEnCharge' />
                                         </div>
                                     </div>
-                                    {
-                                        accueil.demande == '' ? (
+                                        
+                                    { 
+                                        accueil.demande == [] ? (
                                             <input className="input-submit" style={{backgroundColor: 'grey'}} value='créer'  desabled />
                                         ):(
                                             <input className="input-submit" value='créer' type="submit" />
