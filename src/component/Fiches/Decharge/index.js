@@ -9,7 +9,7 @@ const Decharge = ({handleChangeResponsableDecharge, responsable, handleChangeTyp
     return (
         <div>
             <Header1 date={date} />
-            <h2>Decharge</h2>
+            <h2>Decharge </h2>
             <div>
                 Je soussigné 
                 <div className="inputAnimated" >
