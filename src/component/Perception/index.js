@@ -35,7 +35,7 @@ const Perception = () => {
             setInteraction(res.data.interaction)
         })
         .catch(err=> {
-            console.log(err.response.data);
+            
             toast("Erreur serveur, Patienter quelques secondes puis recharger", {
                 position: "top-right",
                 autoClose: 5000,
@@ -60,7 +60,7 @@ const Perception = () => {
         })
         .catch(err=>{
             dispatch(loadingFalse())
-            console.log(err.response.data)
+            
             toast("Erreur serveur, Patienter quelques secondes puis recharger", {
                 position: "top-right",
                 autoClose: 5000,
@@ -77,7 +77,7 @@ const Perception = () => {
     const [product, setProduct] = useState([])
 
     const handleClick=({name, lastName, demande, id, assurencePriseEnCharge})=>{
-        //setopenModal(true)
+        console.log(demande);
         let z = demande.map(el=> {
             return {
                 acteMedicale: el.label,
@@ -95,9 +95,6 @@ const Perception = () => {
 
     const handleSubmit=(e)=>{
         e.preventDefault()
-        console.log('patient', patient);
-        console.log('product', product);
-        console.log('montantTotal', montantTotal);
         setopenModal(true)
         
         dispatch(loadingTrue())

@@ -1,13 +1,50 @@
 import React, {useState} from 'react'
 import Header1 from '../Header1'
 import axios from 'axios'
+import {useSelector, useDispatch} from 'react-redux'
 import './style.css'
+import { loadingTrue, loadingFalse } from "../../../redux/LogIn/action";
 
-const Decharge = ({handleChangeResponsableDecharge, responsable, handleChangeTypeResponsableDecharge, typeResponsable }) => {
+const Decharge = ({handleChangeResponsableDecharge, responsable, handleChangeTypeResponsableDecharge, typeResponsable, patient, module, printDecharge, closeDecharge }) => {
     const date = new Date()
-    
+    const dispatch = useDispatch()
+
+    //Agent
+    const agent = useSelector(state => state.login)
+    const nameAgent = agent.currentUser.name
+    const lastNameAgent = agent.currentUser.lastName
+
+    const handleSubmit= ()=>{
+        
+        
+        dispatch(loadingTrue())
+        axios.post('/decharge/add', {responsable, typeResponsable, patient})
+        .then(decharge=> {
+            
+            axios.post('/module/update', {
+                decharge: decharge.data.decharge._id,
+                module: module
+            })
+            .then(response=>{
+                
+                dispatch(loadingFalse())
+                closeDecharge()
+                printDecharge()
+            })
+            .catch(err=> {
+                dispatch(loadingFalse())
+                console.log(err)
+            })
+        })
+        .catch(err=> {
+            dispatch(loadingFalse())
+            console.log(err)
+        })
+    }
+
+
     return (
-        <div>
+        <div className="A4">
             <Header1 date={date} />
             <h2>Decharge </h2>
             <div>
@@ -38,15 +75,16 @@ const Decharge = ({handleChangeResponsableDecharge, responsable, handleChangeTyp
                     <label>heures</label> 
                 </div> (heures), contre avis médical. <br/>
                 Attestation établie pour servir et valoir ce que de droit.
-                <div className="dechargeRow">
+                <div className="dechargeRow" style={{marginTop: 80}}>
                     <div>
                         <h4>Le Médecin</h4>
+                        {nameAgent} {lastNameAgent}
                     </div>
 
                     <div>
                         <div className="inputAnimated" >
                             <input type="text" value={responsable} />
-                            <label>Nom-Prénom de la personne concernée</label> 
+                            <label>le concernée</label> 
                         </div> <br/>
                         Signature
                     </div>
@@ -54,6 +92,7 @@ const Decharge = ({handleChangeResponsableDecharge, responsable, handleChangeTyp
                 </div>
                 
             </div>
+            <button className="submitA4" onClick={()=>handleSubmit()}>Envoyer</button>
         </div>
     )
 }

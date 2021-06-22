@@ -1,0 +1,9 @@
+
+
+.tSEU tr{
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.tSEU td, .tSEU th {
+    padding: 10px 5px;
+}

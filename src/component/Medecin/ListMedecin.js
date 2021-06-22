@@ -5,7 +5,7 @@ const ListMedecin = ({idGeant, post, demande, patientName, module, patientLastNa
     return (
         <div className="listMedecin" key={idGeant} onClick={()=>handlePatient({idGeant, module, demande, patientName, patientLastName, patientPhone, patientId, dateDeNaissance, lieuDeNaissance})}>
             <div><h3><span>{patientName}</span> {patientLastName}</h3></div>
-            <div>{demande} </div>
+            <div>{demande[0].acteMedicale}... </div>
         </div>
     )
 }

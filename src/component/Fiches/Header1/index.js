@@ -16,10 +16,9 @@ const Header1 = ({date}) => {
                 Niamey-République du NIGER
             </div>
             <div>
-                Niamey, 
+                Niamey, le
                 <div className="inputAnimated" >
                         <input type="text" value={`${jour} / ${mois} / ${annee}`} id='date'/>
-                    <label htmlFor='date'>date</label>
                 </div>
             </div>
         </div>

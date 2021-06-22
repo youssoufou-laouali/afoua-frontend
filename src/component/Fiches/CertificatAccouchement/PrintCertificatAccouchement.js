@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Header1 from '../Header1'
 
-class PrintCertificatDeVisiteMedical extends Component {
+class PrintCertificatAccouchement extends Component {
 
     constructor(props){
         super(props)
@@ -11,22 +11,20 @@ class PrintCertificatDeVisiteMedical extends Component {
 
     render() {
 
-        const {namePatient, lastNamePatient, nameAgent, lastNameAgent, data}= this.props
+        const {namePatient, lastNamePatient, dateDeNaissance, lieuDeNaissance, nameAgent, lastNameAgent, data}= this.props
 
          
         return (
             <div className="A4">
             <Header1 date={this.date} />
-            <h2>CERTIFICAT DE VISITE MEDICALE</h2>
-            <h2>CERTIFICAT D'ACCOUCHEMENT'</h2>
             <div>
                 La Nommée: <strong>{` ${namePatient} ${lastNamePatient}`} </strong><br/><br/>
                 Profession
                 <div className="inputAnimated" >
-                    <input type="text" value={data.profession} id='profession'/>
+                    <input type="text" value={data.profession}  id='profession'/>
                 </div> MLE 
                 <div className="inputAnimated" >
-                    <input type="text" value={data.mle} id='mle'/>
+                    <input type="text" value={data.mle}  id='mle'/>
                 </div> <br/><br/>
 
                 A accouché le
@@ -34,7 +32,8 @@ class PrintCertificatDeVisiteMedical extends Component {
                     <input type="date" value={data.dateAccouchement} id='dateAccouchement'/>
                 </div> D'UN ENFANT DE SEXE  
                 <div className="inputAnimated">
-                    <input type="text" value={data.sexe} id='sexe'/>                    
+                    <input type="text" value={data.sexe} id='sexe'/>
+   
                 </div>
                 <br/>
                 <br/>
@@ -58,7 +57,7 @@ class PrintCertificatDeVisiteMedical extends Component {
                     <br/><br/><strong>{nameAgent} {lastNameAgent}</strong>
                     
                 </div>
-                
+                 
                 
             </div>
         </div>
@@ -66,4 +65,4 @@ class PrintCertificatDeVisiteMedical extends Component {
     }
 }
 
-export default PrintCertificatDeVisiteMedical
+export default PrintCertificatAccouchement
