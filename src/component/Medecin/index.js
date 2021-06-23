@@ -20,6 +20,10 @@ import CertificatGrossesse from '../Fiches/CertificatDeGrossesse'
 import PrintCertificatGrossesse from '../Fiches/CertificatDeGrossesse/PrintCertificatGrossesse';
 import CertificatAccouchement from '../Fiches/CertificatAccouchement'
 import PrintCertificatAccouchement from '../Fiches/CertificatAccouchement/PrintCertificatAccouchement';
+import AvisHospitalisation from '../Fiches/AvisHospitalisation'
+import PrintAvisHospitalisation from '../Fiches/AvisHospitalisation/PrintAvisHospitalisation'
+import CompteRenduAccouchement from '../Fiches/CompteRenduAccouchement';
+import PrintCompteRenduAccouchement from '../Fiches/CompteRenduAccouchement/PrintCompteRenduAccouchement';
 import Modal from '../Modal'
 import {toast} from 'react-toastify'
 import ReactToPrint from "react-to-print";
@@ -219,6 +223,36 @@ En conséquence, le (la) susnommé (e) est apte`)
         setDataCA({...dataCA, [e.target.id]: e.target.value})
     }
 
+    //Avis Hospitallisation
+    const refAH= useRef()
+    const [closeAH, setCloseAH] = useState(false)
+    const [ah, setPrintAH] = useState(false)
+    const closingAH=()=>{
+        setCloseAH(!closeAH)
+    }
+    const printAH=()=>{
+        setPrintAH(!ah)
+    } 
+    const [dataAH, setDataAH] = useState({})
+    const handleChangeAH=(e)=>{
+        setDataAH({...dataAH, [e.target.id]: e.target.value})
+    }
+
+    //Compte Rendu D'accouchement
+    const refCRA= useRef()
+    const [closeCRA, setCloseCRA] = useState(false)
+    const [cra, setPrintCRA] = useState(false)
+    const closingCRA=()=>{
+        setCloseCRA(!closeCRA)
+    }
+    const printCRA=()=>{
+        setPrintCRA(!cra)
+    } 
+    const [dataCRA, setDataCRA] = useState({})
+    const handleChangeCRA=(e)=>{
+        setDataCRA({...dataCRA, [e.target.id]: e.target.value})
+    }
+
     //filtrer les accées des medecins
     const getGeant=()=>{
         axios.get('/api/geant')
@@ -321,6 +355,8 @@ En conséquence, le (la) susnommé (e) est apte`)
                             <li onClick={()=>closingCRH()}>Compte Rendu D'Hospitalisation</li>
                             <li onClick={()=>closingCG()}>Certificat de Grossesse</li>
                             <li onClick={()=>closingCA()}>Certificat D'Accouchement</li>
+                            <li onClick={()=>closingAH()}>Avis D'Hospitalisation</li>
+                            <li onClick={()=>closingCRA()}>Compte Rendu D'Accouchement</li>
                         </ul>
                     </div>)
                     }
@@ -676,6 +712,74 @@ En conséquence, le (la) susnommé (e) est apte`)
                                 nameAgent={nameAgent}
                                 lastNameAgent={lastNameAgent}
                                 ref={refCA}
+                            />
+                        </Modal>
+                    )
+                }
+                {
+                    closeAH &&(
+                        <Modal close={closingAH}>
+                            <AvisHospitalisation 
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                data={dataAH} 
+                                closeAH={closingAH}
+                                printAH={printAH}
+                                handleChange={handleChangeAH}
+                            />
+                        </Modal>
+                    )
+                }
+                {
+                     ah && (
+                        <Modal close={printAH}>
+                            <ReactToPrint
+                                trigger={() => <button className="printBoutton">Imprimer</button>}
+                                content={() => refAH.current}
+                            />
+
+                            <PrintAvisHospitalisation 
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                data={dataAH}
+                                nameAgent={nameAgent}
+                                lastNameAgent={lastNameAgent}
+                                ref={refAH}
+                            />
+                        </Modal>
+                    )
+                }
+                {
+                   closeCRA &&(
+                    <Modal close={closingCRA}>
+                        <CompteRenduAccouchement 
+                            namePatient={patient.name}
+                            lastNamePatient= {patient.lastName}
+                            data={dataCRA}
+                            nameAgent={nameAgent}
+                            lastNameAgent={lastNameAgent} 
+                            closeCRA={closingCRA}
+                            printCRA={printCRA}
+                            handleChange={handleChangeCRA}
+                        />
+                    </Modal>
+                )
+                }
+                {
+                    cra && (
+                        <Modal close={printCRA}>
+                            <ReactToPrint
+                                trigger={() => <button className="printBoutton">Imprimer</button>}
+                                content={() => refCRA.current}
+                            />
+
+                            <PrintCompteRenduAccouchement 
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                data={dataCRA}
+                                nameAgent={nameAgent}
+                                lastNameAgent={lastNameAgent}
+                                ref={refCRA}
                             />
                         </Modal>
                     )

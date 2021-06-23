@@ -17,6 +17,7 @@ class PrintCertificatAccouchement extends Component {
         return (
             <div className="A4">
             <Header1 date={this.date} />
+            <h2>CERTIFICAT D'ACCOUCHEMENT</h2>
             <div>
                 La Nommée: <strong>{` ${namePatient} ${lastNamePatient}`} </strong><br/><br/>
                 Profession
