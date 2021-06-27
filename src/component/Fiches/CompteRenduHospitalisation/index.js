@@ -31,7 +31,7 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, handleChange,
         <div className="A4 A4CRH">
             <Header1 date={date} />
             
-            <h2>SOINS EN URGENCE</h2><br/>
+            <h2>Compte Rendu D'Hospitalisation</h2><br/>
 
             <div>
                 Nom et Prénom: <strong>{namePatient} {lastNamePatient}</strong>   Age: {parseInt(date.getFullYear())-parseInt(dateDeNaissance)}

@@ -52,7 +52,7 @@ const LogIn = (props) => {
                 type: 'success'
                 })
 
-                history.push('/')
+                history.push('/accueil')
         }
         
     }, [props.loginState])

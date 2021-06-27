@@ -32,6 +32,14 @@ import BilletDeSortie from '../Fiches/BilletDeSortie';
 import PrintBilletDeSortie from '../Fiches/BilletDeSortie/PrintBilletDeSortie';
 import Infirmiere from '../Fiches/Infirmiere';
 import PrintInfirmiere from '../Fiches/Infirmiere/PrintInfirmiere'
+import DossierMedical from '../Fiches/DossierMedical'
+import PrintDossier from '../Fiches/DossierMedical/PrintDossier'
+import ConsultationPediatrique from '../Fiches/Consultations/Pediatrique';
+import PrintPediatrique from '../Fiches/Consultations/PrintPediatrique';
+import ConsultationGenerale from '../Fiches/Consultations/General'
+import PrintGenerale from '../Fiches/Consultations/PrintGenerale'
+import Imagerie from '../Fiches/Consultations/Imagerie'
+import PrintImagerie from '../Fiches/Consultations/PrintImagerie'
 import Modal from '../Modal'
 import {toast} from 'react-toastify'
 import ReactToPrint from "react-to-print";
@@ -60,6 +68,14 @@ const Medecin = () => {
         e.target.id=='phone' ? setPatient({...patient, [e.target.id]: parseInt(e.target.value)}):
         setPatient({...patient, [e.target.id]: e.target.value})
         
+    }
+
+    const loadDossierMedical= (id)=>{
+        axios.post('/dossier', {id: id})
+        .then(res=>{
+            console.log(res);
+        })
+        .catch(errors=> console.log(errors))
     }
 
     const patchPatient= (e)=>{
@@ -316,8 +332,70 @@ En conséquence, le (la) susnommé (e) est apte`)
         setPrintIF(!IF)
     } 
     const [dataIF, setDataIF] = useState({})
-    const handleData=(data)=>{
+    const handleDataIF=(data)=>{
         setDataIF(data)
+    }
+
+    //Dossier Medical
+    const refDM= useRef()
+    const [closeDM, setCloseDM] = useState(false)
+    const [DM, setPrintDM] = useState(false)
+    const closingDM=()=>{
+        setCloseDM(!closeDM)
+    }
+    const printDM=()=>{
+        setPrintDM(!DM)
+    } 
+    const [dataDM, setDataDM] = useState({})
+    const handleChangeDM=(e)=>{
+        setDataDM({...dataDM, [e.target.id]: e.target.value})
+    }
+    const [ExamenDM, setExamenDM] = useState([])
+    const handleExamenDM= (data)=>{
+        setExamenDM(data)
+    }
+
+    //Consultation Pédiatrique
+    const refCP= useRef()
+    const [closeCP, setCloseCP] = useState(false)
+    const [CP, setPrintCP] = useState(false)
+    const closingCP=()=>{
+        setCloseCP(!closeCP)
+    }
+    const printCP=()=>{
+        setPrintCP(!CP)
+    } 
+    const [dataCP, setDataCP] = useState({})
+    const handleChangeCP=(e)=>{
+        setDataCP({...dataCP, [e.target.id]: e.target.value})
+    }
+    //Consultation Generale
+    const refConG= useRef()
+    const [closeConG, setCloseConG] = useState(false)
+    const [ConG, setPrintConG] = useState(false)
+    const closingConG=()=>{
+        setCloseConG(!closeConG)
+    }
+    const printConG=()=>{
+        setPrintConG(!ConG)
+    } 
+    const [dataConG, setDataConG] = useState({})
+    const handleChangeConG=(e)=>{
+        setDataConG({...dataConG, [e.target.id]: e.target.value})
+    }
+    //Consultation Generale
+    const refI= useRef()
+    const [closeI, setCloseI] = useState(false)
+    const [I, setPrintI] = useState(false)
+    const closingI=()=>{
+        setCloseI(!closeI)
+    }
+    const printI=()=>{
+        setPrintI(!I)
+    } 
+    const [dataI, setDataI] = useState({})
+    const handleChangeI=(e)=>{
+        setDataI({...dataI, [e.target.id]: e.target.value})
     }
 
     //filtrer les accées des medecins
@@ -357,8 +435,8 @@ En conséquence, le (la) susnommé (e) est apte`)
     }, [])
 
 
-    const handlePatient=({idGeant, demande, patientName, patientLastName, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
-        setPatientSelect({idGeant, demande, patientName, patientLastName, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
+    const handlePatient=({idGeant, demande, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
+        setPatientSelect({idGeant, demande, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
         const date= new Date(dateDeNaissance)
         let j = date.getDate()
         let m= date.getMonth()+1
@@ -369,7 +447,7 @@ En conséquence, le (la) susnommé (e) est apte`)
 
 
         const naissanceDate =a + '-'+m+'-'+j;
-        setPatient({name: patientName, lastName: patientLastName, id: patientId, phone: patientPhone, dateDeNaissance: naissanceDate , lieuDeNaissance})
+        setPatient({name: patientName, lastName: patientLastName, id: patientId, phone: patientPhone, dateDeNaissance: naissanceDate , lieuDeNaissance, adresse})
         toast(`${patientName} ${patientLastName} est seletionné`, {
             position: "top-right",
             autoClose: 5000,
@@ -381,6 +459,7 @@ En conséquence, le (la) susnommé (e) est apte`)
             type: 'success'
             })
         updatingPatient()
+        loadDossierMedical(patientId)
         console.log(new Date(dateDeNaissance));
     }
 
@@ -401,6 +480,7 @@ En conséquence, le (la) susnommé (e) est apte`)
                                 demande={el.geant.demande}
                                 post={el.geant.post}
                                 idGeant={el._id}
+                                adresse={el.geant.patient.adresse? el.geant.patient.adresse : '' }
                                 module={el.geant.module}
                                 dateDeNaissance={el.geant.patient.dateDeNaissance ? el.geant.patient.dateDeNaissance : ''}
                                 lieuDeNaissance={el.geant.patient.lieuDeNaissance ? el.geant.patient.lieuDeNaissance : ''}
@@ -428,6 +508,10 @@ En conséquence, le (la) susnommé (e) est apte`)
                             <li onClick={()=>closingEVP()}>Echographie Vesico-Prostatique</li>
                             <li onClick={()=>closingBS()}>Billet De Sortie</li>
                             <li onClick={()=>closingIF()}>Infirmiere</li>
+                            <li onClick={()=>closingDM()}>Dossier Médical</li>
+                            <li onClick={()=>closingCP()}>Consultation Pédiatrique</li>
+                            <li onClick={()=>closingConG()}>Consultation médecin Générale</li>
+                            <li onClick={()=>closingI()}>Imagerie</li>
                         </ul>
                     </div>)
                     }
@@ -972,7 +1056,7 @@ En conséquence, le (la) susnommé (e) est apte`)
                                 dateDeNaissance= {patient.dateDeNaissance}
                                 closeIF={closingIF}
                                 printIF={printIF}
-                                handleData={handleData}
+                                handleData={handleDataIF}
                             />
                         </Modal>)
                 }
@@ -992,6 +1076,148 @@ En conséquence, le (la) susnommé (e) est apte`)
                                 nameAgent={nameAgent}
                                 lastNameAgent={lastNameAgent}
                                 ref={refIF}
+                            />
+                        </Modal>
+                    )
+                }
+                {
+                    closeDM &&(
+                        <Modal close={closingDM}>
+                            <DossierMedical 
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                idPatient={patient.id}
+                                dateDeNaissance= {patient.dateDeNaissance}
+                                closeDM={closingDM}
+                                printDM={printDM}
+                                handleChange={handleChangeDM}
+                                data={dataDM}
+                                handleExamenDM={handleExamenDM}
+                            />
+                        </Modal>)
+                }
+                {
+                    DM && (
+                        <Modal close={printDM}>
+                            <ReactToPrint
+                                trigger={() => <button className="printBoutton">Imprimer</button>}
+                                content={() => refDM.current}
+                            />
+
+                            <PrintDossier
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                dateDeNaissance={patient.dateDeNaissance}
+                                data={dataDM}
+                                nameAgent={nameAgent}
+                                lastNameAgent={lastNameAgent}
+                                ref={refDM}
+                                Examens={ExamenDM}
+                            />
+                        </Modal>
+                    )
+                }
+                {
+                    closeCP &&(
+                        <Modal close={closingCP}>
+                            <ConsultationPediatrique 
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                data={dataCP}
+                                idPatient={patient.id}
+                                dateDeNaissance= {patient.dateDeNaissance}
+                                closeCP={closingCP}
+                                printCP={printCP}
+                                handleChange={handleChangeCP}
+                            />
+                        </Modal>)
+                }
+                {
+                    CP && (
+                        <Modal close={printCP}>
+                            <ReactToPrint
+                                trigger={() => <button className="printBoutton">Imprimer</button>}
+                                content={() => refCP.current}
+                            />
+
+                            <PrintPediatrique
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                dateDeNaissance={patient.dateDeNaissance}
+                                data={dataCP}
+                                nameAgent={nameAgent}
+                                lastNameAgent={lastNameAgent}
+                                ref={refCP}
+                            />
+                        </Modal>
+                    )
+                }
+                {
+                    closeConG &&(
+                        <Modal close={closingConG}>
+                            <ConsultationGenerale 
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                data={dataConG}
+                                idPatient={patient.id}
+                                dateDeNaissance= {patient.dateDeNaissance}
+                                closeCG={closingConG}
+                                printCG={printConG}
+                                handleChange={handleChangeConG}
+                            />
+                        </Modal>)
+                }
+                {
+                    ConG && (
+                        <Modal close={printConG}>
+                            <ReactToPrint
+                                trigger={() => <button className="printBoutton">Imprimer</button>}
+                                content={() => refConG.current}
+                            />
+
+                            <PrintGenerale
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                dateDeNaissance={patient.dateDeNaissance}
+                                data={dataConG}
+                                nameAgent={nameAgent}
+                                lastNameAgent={lastNameAgent}
+                                ref={refConG}
+                            />
+                        </Modal>
+                    )
+                }
+                {
+                    closeI &&(
+                        <Modal close={closingI}>
+                            <Imagerie
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                data={dataI}
+                                idPatient={patient.id}
+                                dateDeNaissance= {patient.dateDeNaissance}
+                                closeI={closingI}
+                                printI={printI}
+                                handleChange={handleChangeI}
+                            />
+                        </Modal>)
+                }
+                {
+                    I && (
+                        <Modal close={printI}>
+                            <ReactToPrint
+                                trigger={() => <button className="printBoutton">Imprimer</button>}
+                                content={() => refI.current}
+                            />
+
+                            <PrintImagerie
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                dateDeNaissance={patient.dateDeNaissance}
+                                data={dataI}
+                                nameAgent={nameAgent}
+                                lastNameAgent={lastNameAgent}
+                                ref={refI}
                             />
                         </Modal>
                     )

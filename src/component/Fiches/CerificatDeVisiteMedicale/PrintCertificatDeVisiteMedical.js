@@ -11,56 +11,50 @@ class PrintCertificatDeVisiteMedical extends Component {
 
     render() {
 
-        const {namePatient, lastNamePatient, nameAgent, lastNameAgent, data}= this.props
+        const {namePatient, lastNamePatient, nameAgent, lieuDeNaissance, dateDeNaissance, lastNameAgent, justification}= this.props
 
          
         return (
             <div className="A4">
             <Header1 date={this.date} />
             <h2>CERTIFICAT DE VISITE MEDICALE</h2>
-            <h2>CERTIFICAT D'ACCOUCHEMENT'</h2>
             <div>
-                La Nommée: <strong>{` ${namePatient} ${lastNamePatient}`} </strong><br/><br/>
-                Profession
+                En exécution des règlements en vigueur, nous soussigné 
                 <div className="inputAnimated" >
-                    <input type="text" value={data.profession} id='profession'/>
-                </div> MLE 
+                    <input type="text" value={`${nameAgent} ${lastNameAgent}`} id='nameAgent'/>
+                   
+                    <label htmlFor='nameAgent'>nom de l'agent</label> 
+                  
+                </div> <br/>
+                Certifions que le(la) nommé(e): 
+                <div className="inputAnimated">
+                    <input type="text" value={namePatient} id='namePatient'/>
+                </div> 
+                <div className="inputAnimated">
+                    <input type="text" value={lastNamePatient} id='lastNamePatient'/>
+                </div> <br/>
+                Né(e) à 
+                 <div className="inputAnimated" >
+                    <input value={lieuDeNaissance} type="text" id='lieuNaissance'/>
+                </div> le : 
                 <div className="inputAnimated" >
-                    <input type="text" value={data.mle} id='mle'/>
-                </div> <br/><br/>
-
-                A accouché le
-                <div className="inputAnimated">
-                    <input type="date" value={data.dateAccouchement} id='dateAccouchement'/>
-                </div> D'UN ENFANT DE SEXE  
-                <div className="inputAnimated">
-                    <input type="text" value={data.sexe} id='sexe'/>                    
-                </div>
-                <br/>
-                <br/>
-
-                Et qui à reçu le Prénom de :
-                <div className="inputAnimated">
-                    <input type="text" value={data.prenom} id='prenom'/>
+                    <input value={ dateDeNaissance} type="text" id='dateNaissance'/>
                 </div> <br/> <br/>
-                Dont le Père est 
-                <div className="inputAnimated">
-                    <input type="text" value={data.pere} id='pere'/>
-                </div><br/> <br/>
-                La Mère est 
-                <div className="inputAnimated">
-                    <input type="text" value={`${namePatient} ${lastNamePatient}`} />
-                </div><br/> <br/>
+                <textarea value={justification} style={{fontSize:15}} cols="90" rows="5">
+                
+                </textarea>
+                 <br/>
 
                 <div className="right">
-
-                    La Sage Femme: 
-                    <br/><br/><strong>{nameAgent} {lastNameAgent}</strong>
+                    Fait à Niamey, le  
+                    <div className="inputAnimated" >
+                        <input type="text" value={`${this.date.getDate()}/${this.date.getMonth()+1}/${this.date.getFullYear()}`} id='text'/>
+                        
+                    </div> <br/> <br/>
+                    Le Médecin: 
                     
                 </div>
-                
-                
-            </div>
+        </div>
         </div>
         )
     }
