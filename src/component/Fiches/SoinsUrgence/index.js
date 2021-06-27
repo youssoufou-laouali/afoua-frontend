@@ -50,7 +50,6 @@ const SoinsUrgence = ({namePatient, lastNamePatient, dateDeNaissance, idPatient,
 
 
     const handleSubmit= ()=>{
-        console.log('aaa', {assurencePriseEnCharge: 'Nia', demande: products, patient: idPatient});
         dispatch(loadingTrue())
         axios.post('/api/accueil/add', {demande: products, assurencePriseEnCharge: '', patient: idPatient})
             .then(res=>{

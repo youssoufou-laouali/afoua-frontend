@@ -1,0 +1,20 @@
+th, td {
+    border: 1px solid grey;
+}
+
+th tr td {
+    width: 20px;
+}
+
+
+.A4 th{
+    background-color: rgba(0,0,0,.1);
+}
+
+tr th td, tr td td{
+    width: 50px;
+}
+
+.A4Infirmiere{
+    font-size: 12px !important;
+}

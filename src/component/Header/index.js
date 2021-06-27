@@ -36,7 +36,7 @@ const Header = () => {
     return (
         <div className="header-container">
             <div className="header-logo">
-                <h1>Logo</h1>
+                <h1>CLINIQUE-AFOUA</h1>
             </div>
             <div className="header-brand">
                 <div className="header-action">
@@ -61,7 +61,7 @@ const Header = () => {
                         }                    
                     </div>
                 </div>
-                <div>
+                <div className="header-principal-">
                     <Link to='/profil'>Profil</Link>
                     <Link to='/password'>Changer le mot de passe</Link>
                 </div>

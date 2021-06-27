@@ -1,8 +1,17 @@
-.header-container{
+.header-container, .header-brand{
     display: flex;
-    
+    text-align: center;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgb(6, 46, 0);
 }
 
+.header-logo h1{
+    background: repeating-radial-gradient(rgb(90, 74, 74), rgb(133, 118, 77), rgb(93, 131, 62), rgb(49, 102, 109));
+    color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 2px 20px;
+}
 .header-action button{
     outline: none;
     background-color: rgb(207, 207, 207);
@@ -35,4 +44,21 @@
     border-top:solid 1px rgba(255, 255, 255,0.1);
     border-bottom: 1px solid black;
     line-height: 30px;
+}
+
+.header-principal- a{
+    display: inline-block;
+    margin-left: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+
+}
+
+.header-principal- a:hover{
+    background-color: rgba(113, 182, 135, 0.555);
 }
