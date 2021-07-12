@@ -24,10 +24,6 @@ import AvisHospitalisation from '../Fiches/AvisHospitalisation'
 import PrintAvisHospitalisation from '../Fiches/AvisHospitalisation/PrintAvisHospitalisation'
 import CompteRenduAccouchement from '../Fiches/CompteRenduAccouchement';
 import PrintCompteRenduAccouchement from '../Fiches/CompteRenduAccouchement/PrintCompteRenduAccouchement';
-import EchograhieAbdominale from '../Fiches/EchographieAbdominale';
-import PrintEchographieAbdominale from '../Fiches/EchographieAbdominale/PrintEchographieAbdominale';
-import EchoVesicoProstatique from '../Fiches/EchoVesicoProstatique';
-import PrintEchoVesicoProstatique from '../Fiches/EchoVesicoProstatique/PrintEchoVesicoProstatique';
 import BilletDeSortie from '../Fiches/BilletDeSortie';
 import PrintBilletDeSortie from '../Fiches/BilletDeSortie/PrintBilletDeSortie';
 import Infirmiere from '../Fiches/Infirmiere';
@@ -40,11 +36,14 @@ import ConsultationGenerale from '../Fiches/Consultations/General'
 import PrintGenerale from '../Fiches/Consultations/PrintGenerale'
 import Imagerie from '../Fiches/Consultations/Imagerie'
 import PrintImagerie from '../Fiches/Consultations/PrintImagerie'
+import BilletinExamen from '../Fiches/BilletinExamen'
 import Modal from '../Modal'
 import {toast} from 'react-toastify'
 import ReactToPrint from "react-to-print";
 import {useSelector} from 'react-redux'
 import {socket} from '../Header'
+import { logOut } from '../../redux/LogIn/action'
+import {useHistory} from 'react-router-dom'
 
 
 const Medecin = () => {
@@ -52,6 +51,24 @@ const Medecin = () => {
     const [close, setClose] = useState(false)
     const [patientSelect, setPatientSelect] = useState({})
     const dispatch = useDispatch()
+    const history = useHistory()
+    const currentUser = useSelector(state => state.login)
+    const handleLogOut= ()=>{
+        localStorage.removeItem('jwtToken')
+        dispatch(logOut())
+    }
+    useEffect(() => {
+        if(currentUser.currentUser.exp*1000 <= Date.now()){
+            handleLogOut()
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if(!currentUser.isAuthenticated){
+            history.push('/signin')
+        }
+    }, [currentUser, history])
 
     //patient
     const [updatePatient, setUpdatePatient] = useState(false)
@@ -70,10 +87,11 @@ const Medecin = () => {
         
     }
 
+    const [DossierMedicals, setDossierMedical] = useState([])
     const loadDossierMedical= (id)=>{
         axios.post('/dossier', {id: id})
         .then(res=>{
-            console.log(res);
+            setDossierMedical(res.data)
         })
         .catch(errors=> console.log(errors))
     }
@@ -276,36 +294,6 @@ En conséquence, le (la) susnommé (e) est apte`)
     const handleChangeCRA=(e)=>{
         setDataCRA({...dataCRA, [e.target.id]: e.target.value})
     }
-
-    //EchograhieAbdominale
-    const refEA= useRef()
-    const [closeEA, setCloseEA] = useState(false)
-    const [ea, setPrintEA] = useState(false)
-    const closingEA=()=>{
-        setCloseEA(!closeEA)
-    }
-    const printEA=()=>{
-        setPrintEA(!ea)
-    } 
-    const [dataEA, setDataEA] = useState({})
-    const handleChangeEA=(e)=>{
-        setDataEA({...dataEA, [e.target.id]: e.target.value})
-    }
-    //EchoVesicoProstatique
-    const refEVP= useRef()
-    const [closeEVP, setCloseEVP] = useState(false)
-    const [evp, setPrintEVP] = useState(false)
-    const closingEVP=()=>{
-        setCloseEVP(!closeEVP)
-    }
-    const printEVP=()=>{
-        setPrintEVP(!evp)
-    } 
-    const [dataEVP, setDataEVP] = useState({})
-    const handleChangeEVP=(e)=>{
-        setDataEVP({...dataEVP, [e.target.id]: e.target.value})
-    }
-
     //PrintBilletDeSortie
     const refBS= useRef()
     const [closeBS, setCloseBS] = useState(false)
@@ -398,13 +386,27 @@ En conséquence, le (la) susnommé (e) est apte`)
         setDataI({...dataI, [e.target.id]: e.target.value})
     }
 
+    //BilletinExamen
+    const refBilExam= useRef()
+    const [closeBilExam, setCloseBilExam] = useState(false)
+    const [BilExam, setPrintBilExam] = useState(false)
+    const closingBilExam=()=>{
+        setCloseBilExam(!closeBilExam)
+    }
+    const printBilExam=()=>{
+        setPrintBilExam(!BilExam)
+    } 
+    const [dataBilExam, setDataBilExam] = useState({})
+    const handleChangeBilExam=(e)=>{
+        setDataBilExam({...dataBilExam, [e.target.id]: e.target.value})
+    }
+
     //filtrer les accées des medecins
     const getGeant=()=>{
         axios.get('/api/geant')
         .then(res=>{
             let y = res.data.accueil.filter(el=> el.geant.post==agent.currentUser.post || agent.currentUser.post=='superAdmin')
             setData(y);
-            console.log(res.data.accueil);
         })
         .catch(err=>{
             console.log(err.response);
@@ -460,9 +462,15 @@ En conséquence, le (la) susnommé (e) est apte`)
             })
         updatingPatient()
         loadDossierMedical(patientId)
-        console.log(new Date(dateDeNaissance));
     }
 
+    const deletePatientInGeant= ()=>{
+        axios.post('/api/geant', {id: patientSelect.idGeant})
+        .then(res=> {
+            getGeant()
+        })
+        .catch(err=> console.log(err))
+    }
     return (
         <div style={{display: 'flex'}}>
             <div>
@@ -494,32 +502,56 @@ En conséquence, le (la) susnommé (e) est apte`)
                     <div className="buttonAddContainer">
                         <div className="buttonAdd">+</div>
                         <ul>
+                            <li onClick={()=>closingAH()}>Avis D'Hospitalisation</li>
+                            <li onClick={()=>closingBilExam()}>Billetin d'Examen</li>
+                            <li onClick={()=>closingBS()}>Billet De Sortie</li>
                             <li onClick={()=>closing()}>Certificat De Visite Medicale</li>
                             <li onClick={()=>closingCVCVM()}>Certificat De Visite et Contre Visite Medicale</li>
-                            <li onClick={()=>closingDecharge()} >Decharge</li>
                             <li onClick={()=>closingCM()}>Certificat Medical</li>
-                            <li onClick={()=>closingSEU()}>Soins en Urgence</li>
-                            <li onClick={()=>closingCRH()}>Compte Rendu D'Hospitalisation</li>
                             <li onClick={()=>closingCG()}>Certificat de Grossesse</li>
                             <li onClick={()=>closingCA()}>Certificat D'Accouchement</li>
-                            <li onClick={()=>closingAH()}>Avis D'Hospitalisation</li>
-                            <li onClick={()=>closingCRA()}>Compte Rendu D'Accouchement</li>
-                            <li onClick={()=>closingEA()}>Echographie Abdominale</li>
-                            <li onClick={()=>closingEVP()}>Echographie Vesico-Prostatique</li>
-                            <li onClick={()=>closingBS()}>Billet De Sortie</li>
-                            <li onClick={()=>closingIF()}>Infirmiere</li>
-                            <li onClick={()=>closingDM()}>Dossier Médical</li>
-                            <li onClick={()=>closingCP()}>Consultation Pédiatrique</li>
                             <li onClick={()=>closingConG()}>Consultation médecin Générale</li>
+                            <li onClick={()=>closingDecharge()} >Decharge</li>
+                            <li onClick={()=>closingCRH()}>Compte Rendu D'Hospitalisation</li>
+                            <li onClick={()=>closingCRA()}>Compte Rendu D'Accouchement</li>
+                            <li onClick={()=>closingCP()}>Consultation Pédiatrique</li>
+                            <li onClick={()=>closingDM()}>Dossier Médical</li>
                             <li onClick={()=>closingI()}>Imagerie</li>
+                            <li onClick={()=>closingSEU()}>Soins en Urgence</li>
                         </ul>
                     </div>)
+                    }
+                    {
+                        patientSelect.idGeant && (
+                            <button onClick={()=> deletePatientInGeant()}>
+                                -
+                            </button>
+                        )
                     }
                 </div>
             </div>
             <div style={{textAlign: 'center', minWidth:'60vw'}}>
-                    <h3>{patient.name} { patient.lastName}</h3>
-                    né(e) le { patient.dateDeNaissance} à {patient.lieuDeNaissance}
+
+                    <div style={{width: '100%', height: '520px', overflow: 'scroll'}}>
+                        {
+                            DossierMedicals.length !== 0 && (
+                                <div style={{backgroundColor: 'black'}}>
+                                    <DossierMedical 
+                                        namePatient={patient.name}
+                                        lastNamePatient= {patient.lastName}
+                                        idPatient={patient.id}
+                                        dateDeNaissance= {patient.dateDeNaissance}
+                                        closeDM={closingDM}
+                                        printDM={printDM}
+                                        handleChange={handleChangeDM}
+                                        data={DossierMedicals[0]}
+                                        handleExamenDM={handleExamenDM}
+                                        zIndex={1}
+                                    />
+                                </div>)
+                            }
+                    </div>
+
                 {
                     //Update Patient
                     updatePatient && (
@@ -942,76 +974,6 @@ En conséquence, le (la) susnommé (e) est apte`)
                     )
                 }
                 {
-                    closeEA &&(
-                        <Modal close={closingEA}>
-                            <EchograhieAbdominale 
-                                namePatient={patient.name}
-                                lastNamePatient= {patient.lastName}
-                                data={dataEA}
-                                idPatient={patient.id}
-                                dateDeNaissance= {patient.dateDeNaissance}
-                                closeEA={closingEA}
-                                printEA={printEA}
-                                handleChange={handleChangeEA}
-                            />
-                        </Modal>)
-                }
-                {
-                    ea && (
-                        <Modal close={printEA}>
-                            <ReactToPrint
-                                trigger={() => <button className="printBoutton">Imprimer</button>}
-                                content={() => refEA.current}
-                            />
-
-                            <PrintEchographieAbdominale
-                                namePatient={patient.name}
-                                lastNamePatient= {patient.lastName}
-                                dateDeNaissance={patient.dateDeNaissance}
-                                data={dataEA}
-                                nameAgent={nameAgent}
-                                lastNameAgent={lastNameAgent}
-                                ref={refEA}
-                            />
-                        </Modal>
-                    )
-                }
-                {
-                    closeEVP &&(
-                        <Modal close={closingEVP}>
-                            <EchoVesicoProstatique 
-                                namePatient={patient.name}
-                                lastNamePatient= {patient.lastName}
-                                data={dataEVP}
-                                idPatient={patient.id}
-                                dateDeNaissance= {patient.dateDeNaissance}
-                                closeEVP={closingEVP}
-                                printEVP={printEVP}
-                                handleChange={handleChangeEVP}
-                            />
-                        </Modal>)
-                }
-                {
-                    evp && (
-                        <Modal close={printEVP}>
-                            <ReactToPrint
-                                trigger={() => <button className="printBoutton">Imprimer</button>}
-                                content={() => refEVP.current}
-                            />
-
-                            <PrintEchoVesicoProstatique
-                                namePatient={patient.name}
-                                lastNamePatient= {patient.lastName}
-                                dateDeNaissance={patient.dateDeNaissance}
-                                data={dataEVP}
-                                nameAgent={nameAgent}
-                                lastNameAgent={lastNameAgent}
-                                ref={refEVP}
-                            />
-                        </Modal>
-                    )
-                }
-                {
                     closeBS &&(
                         <Modal close={closingBS}>
                             <BilletDeSortie 
@@ -1218,6 +1180,41 @@ En conséquence, le (la) susnommé (e) est apte`)
                                 nameAgent={nameAgent}
                                 lastNameAgent={lastNameAgent}
                                 ref={refI}
+                            />
+                        </Modal>
+                    )
+                }
+                {
+                    closeBilExam &&(
+                        <Modal close={closingBilExam}>
+                            <BilletinExamen
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                data={dataBilExam}
+                                idPatient={patient.id}
+                                dateDeNaissance= {patient.dateDeNaissance}
+                                closeBilExam={closingBilExam}
+                                printBilExam={printBilExam}
+                                handleChange={handleChangeBilExam}
+                            />
+                        </Modal>)
+                }
+                {
+                    BilExam && (
+                        <Modal close={printBilExam}>
+                            <ReactToPrint
+                                trigger={() => <button className="printBoutton">Imprimer</button>}
+                                content={() => refBilExam.current}
+                            />
+
+                            <PrintImagerie
+                                namePatient={patient.name}
+                                lastNamePatient= {patient.lastName}
+                                dateDeNaissance={patient.dateDeNaissance}
+                                data={dataBilExam}
+                                nameAgent={nameAgent}
+                                lastNameAgent={lastNameAgent}
+                                ref={refBilExam}
                             />
                         </Modal>
                     )

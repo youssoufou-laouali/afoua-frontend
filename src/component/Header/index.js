@@ -56,6 +56,10 @@ const Header = () => {
                             <Link to="/register">Ajouter un Agent</Link>
                         }
                         {
+                            currentUser.currentUser.isAdmin && 
+                            <Link to="/list">Liste des Agents</Link>
+                        }
+                        {
                             currentUser.currentUser.post === 'superAdmin' && 
                             <Link to="/admin">Ajouter un Administrateur</Link>
                         }                    

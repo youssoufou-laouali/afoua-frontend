@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Header1 from '../Header1'
 
 class PrintCertificatGrossesse extends Component {
-
     constructor(props){
         super(props)
     }

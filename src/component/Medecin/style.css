@@ -17,7 +17,7 @@
 .listMedecinContainer{
     background-color: rgb(6, 46, 0);
     color: rgb(202, 197, 202);
-    width: 400px;
+    width: 270px;
     text-align: center;
     height: 90vh;
     overflow-y: auto;
@@ -30,6 +30,7 @@
     padding: 20px;
     text-align: center;
     font-size: 14px;
+    z-index: 10;
 }
 
 .buttonAddContainer ul{
@@ -90,4 +91,17 @@
     color: black;
     border-radius: 20px;
     border: rgb(0, 0, 0) 2px dotted;
+}
+
+.PetitDossier{
+    height: 40px;
+    width: 60px;
+    background-color: rgba(175, 175, 175, 0.726);
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 12px;
+    margin-right: 20px;
 }

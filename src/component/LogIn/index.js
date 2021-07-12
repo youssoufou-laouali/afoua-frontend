@@ -12,7 +12,6 @@ const LogIn = (props) => {
     const history = useHistory()
 
     useEffect(() => {
-        console.log(props.loginState);
 
         if(props.loginState.errors.phone){
             toast(props.loginState.errors.phone, {
@@ -51,8 +50,31 @@ const LogIn = (props) => {
                 progress: undefined,
                 type: 'success'
                 })
-
-                history.push('/accueil')
+                const post= props.loginState.currentUser.post;
+                switch (post) {
+                    case 'accueil':
+                        history.push('/accueil')
+                        break;
+                    case 'perception':
+                        history.push('/perception')
+                        break;
+                    case 'infirmiere':
+                        history.push('/infirmiere')
+                        break;
+                    case 'sagefemme':
+                        history.push('/sagefemme')
+                        break;
+                    case 'radiologue':
+                        history.push('/radiologue')
+                        break;
+                    case 'laboratoire':
+                        history.push('/laboratoire')
+                        break;
+                
+                    default:
+                        history.push('/medecin')
+                        break;
+                }
         }
         
     }, [props.loginState])

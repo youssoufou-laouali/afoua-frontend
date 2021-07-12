@@ -5,7 +5,7 @@ import './style.css'
 import {useSelector, useDispatch} from 'react-redux'
 import { loadingTrue, loadingFalse } from "../../../redux/LogIn/action";
 
-const CompteRenduHospitalisation = ({namePatient, lastNamePatient, handleExamenDM, handleChange, data, dateDeNaissance, idPatient, closeDM, printDM}) => {
+const CompteRenduHospitalisation = ({namePatient, lastNamePatient, handleExamenDM, zIndex, handleChange, data, dateDeNaissance, idPatient, closeDM, printDM}) => {
     const date= new Date()
     const dispatch = useDispatch()
 
@@ -46,7 +46,7 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, handleExamenD
         setExamens(Examens.filter((el, index)=> i !== index))
     }
     return (
-        <div className="A4 A4CRH">
+        <div className="A4 A4CRH" style={{zIndex: -zIndex || 0}}>
             <Header1 date={date} />
             
             <h2>Dossier Médical</h2><br/>
@@ -218,6 +218,20 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, handleExamenD
                         <th>Compte Rendu: Examen clinique - Para clinique:</th>
                         <th>Modification Thérapeutiques Actes:</th>
                     </tr>
+                    {
+                        data.examensUlterieurs &&(
+                        (data.examensUlterieurs.length && data.examensUlterieurs.length != 0) &&(
+                            data.examensUlterieurs.map((el, index)=>{
+                                return(
+                                    <tr key={index}>
+                                        <td> {el.date}---{el.heure} </td>
+                                        <td>{el.compteRendu}</td>
+                                        <td>{el.modifications} </td>
+                                    </tr>
+                                )
+                            })
+                        ))
+                    }
                     {
                         Examens && (
                             Examens.map((el, index)=> {

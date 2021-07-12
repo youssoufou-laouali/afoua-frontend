@@ -1,10 +1,13 @@
 import React,{useState, useEffect} from 'react'
 import axios from 'axios'
 import { loadingTrue, loadingFalse } from "../../redux/LogIn/action";
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import ListeInteraction from './ListeInteraction'
 import Modal from '../Modal'
 import {toast} from 'react-toastify'
+import { logOut } from '../../redux/LogIn/action'
+import {useHistory} from 'react-router-dom'
+
 
 const Interaction = () => {
     const initialInteraction= {label:'', price: '', poste: ''}
@@ -13,7 +16,24 @@ const Interaction = () => {
     const [data, setData] = useState([])
     const [isOpenModal, setIsopenModal] = useState(false)
     const dispatch = useDispatch()
+    const history = useHistory()
+    const currentUser = useSelector(state => state.login)
+    const handleLogOut= ()=>{
+        localStorage.removeItem('jwtToken')
+        dispatch(logOut())
+    }
+    useEffect(() => {
+        if(currentUser.currentUser.exp*1000 <= Date.now()){
+            handleLogOut()
+        }
+    }, [])
 
+
+    useEffect(() => {
+        if(!currentUser.isAuthenticated){
+            history.push('/signin')
+        }
+    }, [currentUser, history])
     const getInteraction= ()=>{
         axios.get('/api/interaction/perception')
         .then(res=>{

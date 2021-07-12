@@ -9,13 +9,33 @@ import './style.css'
 import Modal from '../Modal'
 import Recu from './Recu';
 import ReactToPrint from 'react-to-print';
+import { logOut } from '../../redux/LogIn/action'
+import {useHistory} from 'react-router-dom'
 
 const Perception = () => {
 
     const [perceptionData, setPerceptionData] = useState([])
     const [openModal, setopenModal] = useState(false)
     const [patient, setPatient] = useState({})
+    const history = useHistory()
+    const currentUser = useSelector(state => state.login)
     const dispatch = useDispatch()
+    const handleLogOut= ()=>{
+        localStorage.removeItem('jwtToken')
+        dispatch(logOut())
+    }
+    useEffect(() => {
+        if(currentUser.currentUser.exp*1000 <= Date.now()){
+            handleLogOut()
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if(!currentUser.isAuthenticated){
+            history.push('/signin')
+        }
+    }, [currentUser, history])
 
     const refRecu = useRef()
 

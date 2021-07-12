@@ -11,7 +11,7 @@ class PrintCertificatAccouchement extends Component {
 
     render() {
 
-        const {namePatient, lastNamePatient, dateDeNaissance, lieuDeNaissance, nameAgent, lastNameAgent, data}= this.props
+        const {namePatient, lastNamePatient, nameAgent, lastNameAgent, data}= this.props
 
          
         return (

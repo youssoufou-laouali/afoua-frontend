@@ -11,6 +11,9 @@ import ListAgent from '../component/ListAgent'
 import Perception from '../component/Perception'
 import Interaction from '../component/Interaction'
 import Medecin from '../component/Medecin'
+import Infirmiere from '../component/Medecin/infirmiere'
+import SageFemme from '../component/Medecin/sagefemme'
+import Radiologue from '../component/Medecin/radiologue'
 
 const Landing = () => {
 
@@ -28,6 +31,9 @@ const Landing = () => {
             <Route exact path='/perception' component={Perception} />
             <Route exact path='/interaction' component={Interaction} />
             <Route exact path='/medecin' component={Medecin} />
+            <Route exact path='/infirmiere' component={Infirmiere} />
+            <Route exact path='/sagefemme' component={SageFemme} />
+            <Route exact path='/radiologue' component={Radiologue} />
         </Router>
         </>
     )

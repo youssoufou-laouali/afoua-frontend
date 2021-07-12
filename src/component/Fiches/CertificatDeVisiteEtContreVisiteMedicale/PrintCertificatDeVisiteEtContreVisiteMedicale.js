@@ -15,7 +15,7 @@ class PrintCertificatDeVisiteEtContreVisiteMedicale extends Component {
 
     render() {
 
-        const { namePatient, lastNamePatient, dateDeNaissance, lieuDeNaissance, idPatient, module, nameAgent, lastNameAgent, AgentNames, changeAgent2, agent2}= this.props
+        const { namePatient, lastNamePatient, dateDeNaissance, lieuDeNaissance, nameAgent, lastNameAgent, agent2}= this.props
 
         
         const date = new Date()
@@ -41,7 +41,7 @@ class PrintCertificatDeVisiteEtContreVisiteMedicale extends Component {
                 <input type="text" value={`${lieuDeNaissance}`} />
             </div> le :
             <div className="inputAnimated" >
-                <input type="text" value={naissance !='' ? `${naissance.getDate()}/${naissance.getMonth()+1}/${naissance.getFullYear()}`: ''} />
+                <input type="text" value={naissance !=='' ? `${naissance.getDate()}/${naissance.getMonth()+1}/${naissance.getFullYear()}`: ''} />
             </div> <br/>
 
             N'est atteint (e) d'aucun signe de maladie contagieuse ou chronique contre indiquant son aptitude au travail <br/>
@@ -73,7 +73,7 @@ class PrintCertificatDeVisiteEtContreVisiteMedicale extends Component {
                 <input type="text" value={`${lieuDeNaissance}`} />
             </div> le :
             <div className="inputAnimated" >
-                <input type="text" value={naissance !='' ? `${naissance.getDate()}/${naissance.getMonth()+1}/${naissance.getFullYear()}`: ''} />
+                <input type="text" value={naissance !=='' ? `${naissance.getDate()}/${naissance.getMonth()+1}/${naissance.getFullYear()}`: ''} />
             </div> <br/>
 
             N'est atteint (e) d'aucun signe de maladie contagieuse ou chronique contre indiquant son aptitude au travail <br/>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import Header1 from '../Header1'
 import {useSelector, useDispatch} from 'react-redux'
 import './style.css'
@@ -16,8 +16,6 @@ const CerificatDeGrossesse = ({idPatient, printCG, closeCG, namePatient, lastNam
 
     //Date
     const [date, setDate] = useState(new Date())
-
-  
 
     //Submit
     const handleSubmit=()=>{

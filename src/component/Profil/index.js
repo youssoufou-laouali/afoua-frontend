@@ -1,14 +1,34 @@
-import React,{useState}  from 'react'
+import React,{useState, useEffect}  from 'react'
 import axios from 'axios'
 import {useDispatch, useSelector } from "react-redux";
 import { loadingTrue, loadingFalse } from "../../redux/LogIn/action";
 import {toast} from 'react-toastify'
 import './style.css'
+import { logOut } from '../../redux/LogIn/action'
+import {useHistory} from 'react-router-dom'
 
 const Profil = (props) => {
 
     const dispatch = useDispatch()
     const user = useSelector(state => state.login)
+    const history = useHistory()
+    const currentUser = useSelector(state => state.login)
+    const handleLogOut= ()=>{
+        localStorage.removeItem('jwtToken')
+        dispatch(logOut())
+    }
+    useEffect(() => {
+        if(currentUser.currentUser.exp*1000 <= Date.now()){
+            handleLogOut()
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if(!currentUser.isAuthenticated){
+            history.push('/signin')
+        }
+    }, [currentUser, history])
         
     let {name, lastName, phone, id}= user.currentUser
 

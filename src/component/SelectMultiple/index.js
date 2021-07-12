@@ -45,7 +45,7 @@ const SortableSelect = SortableContainer(Select);
   React.useEffect(() => {
       console.log(selected);
       let s= selected.map(el=>{
-        let x = data.filter(val=> val.label == el.label)
+        let x = data.filter(val=> val.label === el.label)
         return x[0]
       })
       setDemande(s)

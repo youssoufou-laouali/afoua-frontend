@@ -1,13 +1,16 @@
 import React,{useState, useEffect} from 'react'
 import './style.css'
 import axios from 'axios'
+import {useHistory} from 'react-router-dom'
 import { loadingTrue, loadingFalse } from "../../redux/LogIn/action";
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import ListPatient from './ListPatient'
 import {toast} from 'react-toastify'
 import Modal from '../Modal'
 import SelectMultiple from '../SelectMultiple'
 import { socket } from "../Header";
+import { logOut } from '../../redux/LogIn/action'
+
 
 
 const Accueil = () => {
@@ -17,6 +20,25 @@ const Accueil = () => {
     const [data, setData] = useState([])
     const [accueil, setAccueil] = useState({})
     const dispatch = useDispatch()
+    const history = useHistory()
+    const currentUser = useSelector(state => state.login)
+    
+    const handleLogOut= ()=>{
+        localStorage.removeItem('jwtToken')
+        dispatch(logOut())
+    }
+    useEffect(() => {
+        if(currentUser.currentUser.exp*1000 <= Date.now()){
+            handleLogOut()
+        }
+    }, [])
+
+
+    useEffect(() => {
+        if(!currentUser.isAuthenticated){
+            history.push('/signin')
+        }
+    }, [currentUser, history])
 
     useEffect(() => {
         socket.on('message', (mes)=>{
