@@ -28,6 +28,9 @@ const Perception = () => {
         if(currentUser.currentUser.exp*1000 <= Date.now()){
             handleLogOut()
         }
+        if(currentUser.currentUser.post !== 'perception' && currentUser.currentUser.post !== 'superAdmin'){
+            history.push('/')
+        }
     }, [])
 
 
@@ -152,9 +155,7 @@ const Perception = () => {
     }
 
     useEffect(() => {
-
         getMurAccueil()
-        
     }, [])
 
     const handleChangeDemande=(e)=>{

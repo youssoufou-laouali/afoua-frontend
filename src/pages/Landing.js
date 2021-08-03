@@ -14,6 +14,7 @@ import Medecin from '../component/Medecin'
 import Infirmiere from '../component/Medecin/infirmiere'
 import SageFemme from '../component/Medecin/sagefemme'
 import Radiologue from '../component/Medecin/radiologue'
+import Laboratoire from '../component/Medecin/laboratoire'
 
 const Landing = () => {
 
@@ -32,6 +33,7 @@ const Landing = () => {
             <Route exact path='/interaction' component={Interaction} />
             <Route exact path='/medecin' component={Medecin} />
             <Route exact path='/infirmiere' component={Infirmiere} />
+            <Route exact path='/laboratoire' component={Laboratoire} />
             <Route exact path='/sagefemme' component={SageFemme} />
             <Route exact path='/radiologue' component={Radiologue} />
         </Router>

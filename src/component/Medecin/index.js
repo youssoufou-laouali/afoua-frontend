@@ -37,6 +37,7 @@ import PrintGenerale from '../Fiches/Consultations/PrintGenerale'
 import Imagerie from '../Fiches/Consultations/Imagerie'
 import PrintImagerie from '../Fiches/Consultations/PrintImagerie'
 import BilletinExamen from '../Fiches/BilletinExamen'
+import PrintBilletinExamen from '../Fiches/BilletinExamen/PrintBilletinExamen'
 import Modal from '../Modal'
 import {toast} from 'react-toastify'
 import ReactToPrint from "react-to-print";
@@ -61,6 +62,7 @@ const Medecin = () => {
         if(currentUser.currentUser.exp*1000 <= Date.now()){
             handleLogOut()
         }
+        
     }, [])
 
 
@@ -88,10 +90,27 @@ const Medecin = () => {
     }
 
     const [DossierMedicals, setDossierMedical] = useState([])
+    const [Examlterieurs, setExamlterieurs] = useState([])
     const loadDossierMedical= (id)=>{
         axios.post('/dossier', {id: id})
         .then(res=>{
+            let responses= []
             setDossierMedical(res.data)
+            console.log(res.data);
+            res.data.map(el=> {
+                el.examensUlterieurs.map(element=>{
+                    responses.push(element)
+                })
+            })
+            setExamlterieurs(responses)
+        })
+        .catch(errors=> console.log(errors))
+    }
+
+    const skipToInfirmiere= async ()=> {
+        axios.post('api/accueil/infirmiere', {id: patientSelect.accueil, post:'infirmiere'})
+        .then(res=>{
+            getGeant()
         })
         .catch(errors=> console.log(errors))
     }
@@ -396,9 +415,17 @@ En conséquence, le (la) susnommé (e) est apte`)
     const printBilExam=()=>{
         setPrintBilExam(!BilExam)
     } 
-    const [dataBilExam, setDataBilExam] = useState({})
-    const handleChangeBilExam=(e)=>{
-        setDataBilExam({...dataBilExam, [e.target.id]: e.target.value})
+
+    const [productsExam, setProductsExam] = useState([])
+    const handleProductsExam=(e)=>{
+        if(!e){
+            return
+        }
+        setProductsExam([...productsExam, {...e, response: '',}])
+    }
+    const handleDeleteExam= (i)=>{
+        let a = productsExam.filter((el, index)=> index !==i )
+        setProductsExam(a)
     }
 
     //filtrer les accées des medecins
@@ -437,8 +464,8 @@ En conséquence, le (la) susnommé (e) est apte`)
     }, [])
 
 
-    const handlePatient=({idGeant, demande, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
-        setPatientSelect({idGeant, demande, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
+    const handlePatient=({idGeant, accueil, demande, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
+        setPatientSelect({idGeant, accueil, demande, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
         const date= new Date(dateDeNaissance)
         let j = date.getDate()
         let m= date.getMonth()+1
@@ -492,6 +519,7 @@ En conséquence, le (la) susnommé (e) est apte`)
                                 module={el.geant.module}
                                 dateDeNaissance={el.geant.patient.dateDeNaissance ? el.geant.patient.dateDeNaissance : ''}
                                 lieuDeNaissance={el.geant.patient.lieuDeNaissance ? el.geant.patient.lieuDeNaissance : ''}
+                                accueil={el.geant._id}
                             />
                            )
                         )
@@ -523,20 +551,26 @@ En conséquence, le (la) susnommé (e) est apte`)
                     }
                     {
                         patientSelect.idGeant && (
-                            <button onClick={()=> deletePatientInGeant()}>
-                                -
-                            </button>
+                            <div>
+                                <button className="btnMedecinToSkipPatient" onClick={()=> deletePatientInGeant()}>
+                                    Supprimer de la liste
+                                </button>
+                                <button className="btnMedecinToSkipPatient" onClick={()=> skipToInfirmiere()}>
+                                    Hospitaliser
+                                </button>
+                            </div>
                         )
                     }
                 </div>
             </div>
             <div style={{textAlign: 'center', minWidth:'60vw'}}>
-
-                    <div style={{width: '100%', height: '520px', overflow: 'scroll'}}>
+                <h3>{patient.name + ' ' + patient.lastName}</h3>
+                    <div>
+                        <h4>Dossier Médical</h4>
                         {
                             DossierMedicals.length !== 0 && (
                                 <div style={{backgroundColor: 'black'}}>
-                                    <DossierMedical 
+                                    <PrintDossier 
                                         namePatient={patient.name}
                                         lastNamePatient= {patient.lastName}
                                         idPatient={patient.id}
@@ -545,7 +579,7 @@ En conséquence, le (la) susnommé (e) est apte`)
                                         printDM={printDM}
                                         handleChange={handleChangeDM}
                                         data={DossierMedicals[0]}
-                                        handleExamenDM={handleExamenDM}
+                                        Examens = {Examlterieurs}
                                         zIndex={1}
                                     />
                                 </div>)
@@ -1190,12 +1224,14 @@ En conséquence, le (la) susnommé (e) est apte`)
                             <BilletinExamen
                                 namePatient={patient.name}
                                 lastNamePatient= {patient.lastName}
-                                data={dataBilExam}
                                 idPatient={patient.id}
                                 dateDeNaissance= {patient.dateDeNaissance}
                                 closeBilExam={closingBilExam}
                                 printBilExam={printBilExam}
-                                handleChange={handleChangeBilExam}
+                                handleProductsExam= {handleProductsExam}
+                                productsExam= {productsExam}
+                                handleDelete={handleDeleteExam}
+                                handleDeleteResponse= {()=> null}
                             />
                         </Modal>)
                 }
@@ -1207,13 +1243,13 @@ En conséquence, le (la) susnommé (e) est apte`)
                                 content={() => refBilExam.current}
                             />
 
-                            <PrintImagerie
+                            <PrintBilletinExamen
                                 namePatient={patient.name}
                                 lastNamePatient= {patient.lastName}
                                 dateDeNaissance={patient.dateDeNaissance}
-                                data={dataBilExam}
                                 nameAgent={nameAgent}
                                 lastNameAgent={lastNameAgent}
+                                productsExam= {productsExam}
                                 ref={refBilExam}
                             />
                         </Modal>

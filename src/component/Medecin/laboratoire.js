@@ -4,11 +4,7 @@ import { loadingTrue, loadingFalse } from "../../redux/LogIn/action";
 import {useDispatch} from 'react-redux'
 import ListMedecin from './ListMedecin'
 import './style.css'
-import Infirmiere from '../Fiches/Infirmiere';
-import PrintInfirmiere from '../Fiches/Infirmiere/PrintInfirmiere'
-import PrintDossier from '../Fiches/DossierMedical/PrintDossier'
-import PrintBilletinExamen from '../Fiches/BilletinExamen/PrintBilletinExamen';
-import Modal from '../Modal'
+import BilletinExamen from '../Fiches/BilletinExamen';
 import {toast} from 'react-toastify'
 import ReactToPrint from "react-to-print";
 import {useSelector} from 'react-redux'
@@ -20,7 +16,7 @@ import {useHistory} from 'react-router-dom'
 const Medecin = () => {
     const [data, setData] = useState([])
     const [close, setClose] = useState(false)
-    const [patientSelect, setPatientSelect] = useState({})
+    const [patientSelect, setPatientSelect] = useState({demande: []})
     const dispatch = useDispatch()
     const history = useHistory()
     const currentUser = useSelector(state => state.login)
@@ -32,7 +28,7 @@ const Medecin = () => {
         if(currentUser.currentUser.exp*1000 <= Date.now()){
             handleLogOut()
         }
-        if(currentUser.currentUser.post != 'infirmiere' && currentUser.currentUser.post != 'superAdmin'){
+        if(currentUser.currentUser.post != 'laboratoire' && currentUser.currentUser.post != 'superAdmin'){
             history.push('/')
         }
     }, [])
@@ -44,39 +40,11 @@ const Medecin = () => {
         }
     }, [currentUser, history])
 
-    //patient
-    const [updatePatient, setUpdatePatient] = useState(false)
-    const [patient, setPatient] = useState({
-        name:'', lastName: '',
-        phone: 0, dateDeNaissance:'',
-        lieuDeNaissance: '', adresse: '', id: ''
-    })
-    const updatingPatient=()=>{
-        setUpdatePatient(!updatePatient)
-    }
-
-    const handleChange= (e)=>{
-        e.target.id=='phone' ? setPatient({...patient, [e.target.id]: parseInt(e.target.value)}):
-        setPatient({...patient, [e.target.id]: e.target.value})
-        
-    }
-
-    const [DossierMedicals, setDossierMedical] = useState([])
-    const loadDossierMedical= (id)=>{
-        axios.post('/dossier', {id: id})
-        .then(res=>{
-            setDossierMedical(res.data)
-            console.log('dossier', res.data);
-        })
-        .catch(errors=> console.log(errors))
-    }
-
     const [Examen, setExamen] = useState([])
     const loadExamen= (id)=>{
         axios.post('/bulletinexamen', {id})
         .then(res=>{
             setExamen(res.data)
-            console.log('exam', res.data);
         })
         .catch(errors=> console.log(errors))
     }
@@ -93,21 +61,6 @@ const Medecin = () => {
     const agent = useSelector(state => state.login)
     const nameAgent = agent.currentUser.name
     const lastNameAgent = agent.currentUser.lastName
-
-    //Infirmiere
-    const refIF= useRef()
-    const [closeIF, setCloseIF] = useState(false)
-    const [IF, setPrintIF] = useState(false)
-    const closingIF=()=>{
-        setCloseIF(!closeIF)
-    }
-    const printIF=()=>{
-        setPrintIF(!IF)
-    } 
-    const [dataIF, setDataIF] = useState({})
-    const handleDataIF=(data)=>{
-        setDataIF(data)
-    }
 
     //filtrer les accées des medecins
     const getGeant=()=>{
@@ -144,9 +97,30 @@ const Medecin = () => {
         })
     }, [])
 
+    const searchFiche=()=>{
+        axios.post('/bulletinexamen', {id: patientSelect.patientId})
+        .then(response=> {
+            console.log(response);
+        })
+        .catch(err=> {
+            console.log(err);
+        })
+    }
+
     useEffect(() => {
-        console.log(data);
-    }, [data])
+        setProductsExam(patientSelect.demande);
+        searchFiche()
+    }, [patientSelect])
+
+    const [updatePatient, setUpdatePatient] = useState(false)
+    const [patient, setPatient] = useState({
+        name:'', lastName: '',
+        phone: 0, dateDeNaissance:'',
+        lieuDeNaissance: '', adresse: '', id: ''
+    })
+    const updatingPatient=()=>{
+        setUpdatePatient(!updatePatient)
+    }
 
     const handlePatient=({idGeant, demande, accueil, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
         setPatientSelect({idGeant, demande, accueil, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
@@ -170,9 +144,23 @@ const Medecin = () => {
             type: 'success'
             })
         updatingPatient()
-        loadDossierMedical(patientId)
         loadExamen(patientId)
     }
+
+    const [productsExam, setProductsExam] = useState(patientSelect.demande)
+    const handleProductsExam=(e)=>{
+        console.log(e);
+        const tab = productsExam.map((el, index)=> {
+           return (index == e.index) ? {...el, response: e.response} : el
+        })
+        setProductsExam(tab)
+        console.log(tab);
+    }
+    /*
+    const handleDeleteExam= (i)=>{
+        let a = productsExam.filter((el, index)=> index !==i )
+        setProductsExam(a)
+    }*/
 
     return (
         <div style={{display: 'flex'}}>
@@ -200,49 +188,23 @@ const Medecin = () => {
                         )
                     }
                 </div>
-                <div>
-                    { patientSelect.idGeant &&(
-                    <div className="buttonAddContainer">
-                        <div className="buttonAdd">+</div>
-                        <ul>
-                            <li onClick={()=>closingIF()}>Infirmiere</li>
-                        </ul>
-                    </div>)
-                    }
-                </div>
             </div>
             <div style={{textAlign: 'center', minWidth:'60vw'}}>
                     <h3>{patient.name + ' ' + patient.lastName}</h3>
-                    <h4>Dossier Medical</h4>
-                    <div>
-                        {
-                            DossierMedicals.length !== 0 && (
-                                <div style={{backgroundColor: 'black'}}>
-                                    <PrintDossier
-                                        namePatient={patient.name}
-                                        lastNamePatient= {patient.lastName}
-                                        dateDeNaissance={patient.dateDeNaissance}
-                                        data={DossierMedicals[DossierMedicals.length - 1]}
-                                        nameAgent={nameAgent}
-                                        lastNameAgent={lastNameAgent}
-                                        Examens={DossierMedicals[DossierMedicals.length - 1].examensUlterieurs}
-                                    />
-                                </div>)
-                            }
-                    </div>
-
                         <h4>Bulletin d'Examen</h4>
                     <div>
                         {
-                            (Examen.length !== 0 && Examen[Examen.length - 1].data[0].response == '') && (
+                            (patientSelect.demande.length !== 0) && (
                                 <div style={{backgroundColor: 'black'}}>
-                                    <PrintBilletinExamen
+                                    <BilletinExamen
                                         namePatient={patient.name}
                                         lastNamePatient= {patient.lastName}
                                         dateDeNaissance={patient.dateDeNaissance}
-                                        productsExam={Examen[Examen.length - 1].data}
+                                        idPatient={patient.id}
+                                        productsExam={productsExam}
                                         nameAgent={nameAgent}
                                         lastNameAgent={lastNameAgent}
+                                        handleProductsExam={handleProductsExam}
                                     />
                                 </div>)
                             }
@@ -253,40 +215,6 @@ const Medecin = () => {
                             <h5>Envoyer au Laboratoire</h5>
                         </div>)
                     }
-                {
-                    closeIF &&(
-                        <Modal close={closingIF}>
-                            <Infirmiere 
-                                namePatient={patient.name}
-                                lastNamePatient= {patient.lastName}
-                                idPatient={patient.id}
-                                dateDeNaissance= {patient.dateDeNaissance}
-                                closeIF={closingIF}
-                                printIF={printIF}
-                                handleData={handleDataIF}
-                            />
-                        </Modal>)
-                }
-                {
-                    IF && (
-                        <Modal close={printIF}>
-                            <ReactToPrint
-                                trigger={() => <button className="printBoutton">Imprimer</button>}
-                                content={() => refIF.current}
-                            />
-
-                            <PrintInfirmiere
-                                namePatient={patient.name}
-                                lastNamePatient= {patient.lastName}
-                                dateDeNaissance={patient.dateDeNaissance}
-                                data={dataIF}
-                                nameAgent={nameAgent}
-                                lastNameAgent={lastNameAgent}
-                                ref={refIF}
-                            />
-                        </Modal>
-                    )
-                }
             </div>
         </div>
     )

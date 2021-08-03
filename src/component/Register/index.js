@@ -21,6 +21,9 @@ const Register = (props) => {
         if(currentUser.currentUser.exp*1000 <= Date.now()){
             handleLogOut()
         }
+        if(currentUser.currentUser.post !== 'admin' && currentUser.currentUser.post !== 'superAdmin'){
+            history.push('/')
+        }
     }, [])
 
 

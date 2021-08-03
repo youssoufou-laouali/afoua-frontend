@@ -19,11 +19,9 @@ const SoinsUrgence = ({namePatient, lastNamePatient, dateDeNaissance, idPatient,
     const getProducts= ()=>{
         axios.get('/api/interaction/perception')
         .then(res=>{
-            console.log(res);
             setInteraction(res.data.interaction)
         })
         .catch(err=> {
-            console.log(err.response.data);
         })
     }
     useEffect(() => {
@@ -56,7 +54,6 @@ const SoinsUrgence = ({namePatient, lastNamePatient, dateDeNaissance, idPatient,
                 socket.emit("accueil", res.data)
                 axios.post('/soinsurgence/add', {demande: products, patient: idPatient})
                 .then(certificat=> {
-                    
                     axios.post('/module/update', {
                         soinsUrgence: certificat.data.soinsUrgence._id,
                         module: module

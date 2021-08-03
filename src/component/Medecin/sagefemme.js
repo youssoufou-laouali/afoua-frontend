@@ -35,6 +35,9 @@ const Medecin = () => {
         if(currentUser.currentUser.exp*1000 <= Date.now()){
             handleLogOut()
         }
+        if(currentUser.currentUser.post !== 'sagefemme' && currentUser.currentUser.post !== 'gynecologue' && currentUser.currentUser.post !== 'superAdmin'){
+            history.push('/')
+        }
     }, [])
 
 

@@ -31,6 +31,9 @@ const Accueil = () => {
         if(currentUser.currentUser.exp*1000 <= Date.now()){
             handleLogOut()
         }
+        if(currentUser.currentUser.post !== 'accueil' && currentUser.currentUser.post !== 'superAdmin'){
+            history.push('/')
+        }
     }, [])
 
 
@@ -449,8 +452,6 @@ const Accueil = () => {
                    
                 }
             </div>
-
-
         </div>
     )
 }

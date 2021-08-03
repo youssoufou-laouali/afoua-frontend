@@ -105,3 +105,29 @@
     font-size: 12px;
     margin-right: 20px;
 }
+
+.envoyerBTN {
+    cursor: pointer;
+    border-radius: 20px;
+    background-color: seagreen;
+    color: rgb(228, 228, 228);
+    padding: 1px;
+    font-size: 18px;
+    width: 30%;
+    margin: auto;
+}
+.envoyerBTN:hover {
+    border-radius: 40px;
+    background-color: rgb(111, 204, 151);
+    color: rgb(41, 37, 37);
+}
+
+.btnMedecinToSkipPatient {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 10px;
+    cursor: pointer;
+    color: springgreen;
+    background-color: rgb(12, 8, 8);
+    border-radius: 15px;
+}

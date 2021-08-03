@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Header1 from '../Header1'
 
-class PrintEchographieAbdominal extends Component {
+class PrintBilletinExamen extends Component {
 
     constructor(props){
         super(props)
@@ -11,24 +11,36 @@ class PrintEchographieAbdominal extends Component {
 
     render() {
 
-        const {namePatient, lastNamePatient,dateDeNaissance ,nameAgent, lastNameAgent, data}= this.props
-
+        const {namePatient, lastNamePatient,dateDeNaissance ,nameAgent, lastNameAgent, productsExam}= this.props
+        console.log(productsExam);
          
         return (
             <div className="A4">
             <Header1 date={this.date} />
-            <h2>Consultation Pediatrique</h2>
+            <h2>Billetin Examen</h2>
             <div>
                 Nom et Prénom: <strong>{namePatient} {lastNamePatient}</strong> &ensp; &ensp; &ensp;  Age: {parseInt(this.date.getFullYear())-parseInt(dateDeNaissance)}
                  
                 <div className="BEFlex">
-                    <div style={{width:'50%'}}>
+                    <div style={{width:'50%', minHeight: 300}}>
                         <div style={{border: '1px black solid'}}>
                             <h4>Demande</h4>
                             <div>
-                                <textarea value={data.demande} id='demande' style={{fontSize:15}} onChange={e=>handleChange(e)} cols="45" rows="6">
-                    
-                                </textarea>
+                                <table>
+                            {
+                            productsExam.map((el, index)=> {
+                                return (
+                                    <tr key={index} id={index} style={{height: 50}}>
+                                        <td style={{padding: '5px 20px'}}>
+                                            {
+                                                el.label
+                                            }
+                                        </td>
+                                    </tr>
+                                        )
+                                    })
+                                }
+                                </table>
                             </div>
                             <div>
                                 Médecin: <br/> <br/> Dr <strong> {nameAgent} {lastNameAgent} </strong>
@@ -39,23 +51,32 @@ class PrintEchographieAbdominal extends Component {
                         <div style={{border: '1px black solid'}}>
                             <h4>Reponse</h4>
                             <div>
-                                <textarea value={data.reponse} id='reponse' style={{fontSize:15}} onChange={e=>handleChange(e)} cols="45" rows="6">
-                    
-                                </textarea>
+                            <table>
+                            {
+                            productsExam.map((el, index)=> {
+                                return (
+                                    <tr style={{height: 50}} key={index} id={index}>
+                                        <td>
+                                            {
+                                                el.response
+                                            }
+                                        </td>
+                                    </tr>
+                                        )
+                                    })
+                                }
+                                </table>
                             </div>
                             <div>
                                 Laborantin: <br/> <br/> Agent: <strong>  </strong>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
-                
             </div>
-           
             </div>
         )
     }
 }
 
-export default PrintEchographieAbdominal
+export default PrintBilletinExamen
