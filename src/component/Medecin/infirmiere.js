@@ -71,12 +71,12 @@ const Medecin = () => {
         .catch(errors=> console.log(errors))
     }
 
-    const [Examen, setExamen] = useState([])
+    const [Examen, setExamen] = useState({})
     const loadExamen= (id)=>{
-        axios.post('/bulletinexamen', {id})
+        axios.post('/bulletinexamen/one', {id})
         .then(res=>{
-            setExamen(res.data)
             console.log('exam', res.data);
+            setExamen(res.data)
         })
         .catch(errors=> console.log(errors))
     }
@@ -115,7 +115,6 @@ const Medecin = () => {
         .then(res=>{
             let y = res.data.accueil.filter(el=> el.geant.post==agent.currentUser.post || agent.currentUser.post=='superAdmin')
             setData(y);
-            console.log(res.data.accueil);
         })
         .catch(err=>{
             console.log(err.response);
@@ -148,8 +147,8 @@ const Medecin = () => {
         console.log(data);
     }, [data])
 
-    const handlePatient=({idGeant, demande, accueil, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
-        setPatientSelect({idGeant, demande, accueil, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
+    const handlePatient=({idGeant, demande, accueil, idSup, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
+        setPatientSelect({idGeant, demande, accueil, idSup, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
         const date= new Date(dateDeNaissance)
         let j = date.getDate()
         let m= date.getMonth()+1
@@ -171,7 +170,7 @@ const Medecin = () => {
             })
         updatingPatient()
         loadDossierMedical(patientId)
-        loadExamen(patientId)
+        if(idSup) loadExamen(idSup)
     }
 
     return (
@@ -195,6 +194,7 @@ const Medecin = () => {
                                 dateDeNaissance={el.geant.patient.dateDeNaissance ? el.geant.patient.dateDeNaissance : ''}
                                 lieuDeNaissance={el.geant.patient.lieuDeNaissance ? el.geant.patient.lieuDeNaissance : ''}
                                 accueil={el.geant._id}
+                                idSup= {el.geant.idSup}
                             />
                            )
                         )
@@ -234,13 +234,13 @@ const Medecin = () => {
                         <h4>Bulletin d'Examen</h4>
                     <div>
                         {
-                            (Examen.length !== 0 && Examen[Examen.length - 1].data[0].response == '') && (
+                            (Examen && Examen._id) && (
                                 <div style={{backgroundColor: 'black'}}>
                                     <PrintBilletinExamen
                                         namePatient={patient.name}
                                         lastNamePatient= {patient.lastName}
                                         dateDeNaissance={patient.dateDeNaissance}
-                                        productsExam={Examen[Examen.length - 1].data}
+                                        productsExam={Examen.data}
                                         nameAgent={nameAgent}
                                         lastNameAgent={lastNameAgent}
                                     />
@@ -248,7 +248,7 @@ const Medecin = () => {
                             }
                     </div>
                     {
-                        Examen.length > 0 && (
+                        (Examen && Examen._id) && (
                         <div className="envoyerBTN" onClick={()=> skipToLabo()}>
                             <h5>Envoyer au Laboratoire</h5>
                         </div>)

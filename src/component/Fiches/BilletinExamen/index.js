@@ -41,10 +41,10 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissan
     }
     const handleSubmit=()=>{
         dispatch(loadingTrue())
-        axios.post('/api/accueil/add', {demande: productsExam, assurencePriseEnCharge: '', patient: idPatient})
-        .then(responses =>{
-            axios.post('/bulletinexamen/add', { patient: idPatient, data: productsExam})
-            .then(res=> {
+        axios.post('/bulletinexamen/add', { patient: idPatient, data: productsExam})
+        .then(res=> {
+            axios.post('/api/accueil/add', {demande: productsExam, assurencePriseEnCharge: '', patient: idPatient, idSup: res.data._id})
+            .then(responses =>{
                 dispatch(loadingFalse())
                 socket.emit("accueil", res.data)
                 closeBilExam()
@@ -192,8 +192,16 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissan
                         
                     </div>
                 </div>
-                <button className="submitA4" onClick={()=>handleSubmit()}>Valider</button>
-                <button className="submitA4" onClick={()=>handleUpdate()}>Enregistrer</button>
+                {
+                   agent.currentUser.post !== 'laboratoire' && (
+                    <button className="submitA4" onClick={()=>handleSubmit()}>Valider</button>
+                   )
+                }
+                {
+                   (agent.currentUser.post == 'laboratoire')  && (
+                    <button className="submitA4" onClick={()=>handleUpdate()}>Enregistrer</button>
+                   )
+                }
             </div>
         </div>
     )
