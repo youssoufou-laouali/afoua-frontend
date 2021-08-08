@@ -68,6 +68,7 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
     }
 
     const handleDeleteAdd=(i)=>{
+        if(window.confirm('Vous voulez supprimer définitivement cette information ?'))
         setTraitement(traitement.filter((el, index)=> i!==index))
     }
 
@@ -105,6 +106,15 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
     }
     const RemoveValueExamen=(i)=>{
       setExamensComplementaires(examensComplementaires.filter((el, index)=> index !=i))
+    }
+
+    const modify=(field, index) => {
+        let traitementCopy = [...traitement];
+        traitementCopy[index][field]= !traitementCopy[index][field];
+        setTraitement(traitementCopy);
+    }
+    const modifyTemp=(temp, jour) => {
+        
     }
     
     return (
@@ -255,13 +265,13 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                                     <td>
                                         <tr>
                                             <td>
-                                            <input type="checkbox" checked={el.j1matin} />
+                                            <input type="checkbox" onChange={(e)=> modify('j1matin', index)} checked={el.j1matin} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j1midi} />
+                                            <input type="checkbox" onChange={(e)=> modify('j1midi', index)} checked={el.j1midi} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j1soir} />
+                                            <input type="checkbox" onChange={(e)=> modify('j1soir', index)} checked={el.j1soir} />
                                             </td>
                                             
                                         </tr>
@@ -269,13 +279,13 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                                     <td>
                                         <tr>
                                             <td>
-                                            <input type="checkbox" checked={el.j2matin} />
+                                            <input type="checkbox" onChange={(e)=> modify('j2matin', index)} checked={el.j2matin} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j2midi} />
+                                            <input type="checkbox" onChange={(e)=> modify('j2midi', index)} checked={el.j2midi} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j2soir} />
+                                            <input type="checkbox" onChange={(e)=> modify('j2soir', index)} checked={el.j2soir} />
                                             </td>
                                             
                                         </tr>
@@ -283,13 +293,13 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                                     <td>
                                         <tr>
                                             <td>
-                                            <input type="checkbox" checked={el.j3matin} />
+                                            <input type="checkbox" onChange={(e)=> modify('j3matin', index)} checked={el.j3matin} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j3midi} />
+                                            <input type="checkbox"  onChange={(e)=> modify('j3midi', index)} checked={el.j3midi} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j3soir} />
+                                            <input type="checkbox" onChange={(e)=> modify('j3soir', index)} checked={el.j3soir} />
                                             </td>
                                             
                                         </tr>
@@ -297,13 +307,13 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                                     <td>
                                         <tr>
                                             <td>
-                                            <input type="checkbox" checked={el.j4matin} />
+                                            <input type="checkbox" onChange={(e)=> modify('j4matin', index)} checked={el.j4matin} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j4midi} />
+                                            <input type="checkbox"  onChange={(e)=> modify('j4midi', index)} checked={el.j4midi} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j4soir} />
+                                            <input type="checkbox" onChange={(e)=> modify('j4soir', index)} checked={el.j4soir} />
                                             </td>
                                             
                                         </tr>
@@ -311,13 +321,13 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                                     <td>
                                         <tr>
                                             <td>
-                                            <input type="checkbox" checked={el.j5matin} />
+                                            <input type="checkbox" onChange={(e)=> modify('j5matin', index)} checked={el.j5matin} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j5midi} />
+                                            <input type="checkbox"  onChange={(e)=> modify('j5midi', index)} checked={el.j5midi} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j5soir} />
+                                            <input type="checkbox" onChange={(e)=> modify('j5soir', index)} checked={el.j5soir} />
                                             </td>
                                             
                                         </tr>
@@ -325,18 +335,18 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                                     <td>
                                         <tr>
                                             <td>
-                                            <input type="checkbox" checked={el.j6matin} />
+                                            <input type="checkbox" onChange={(e)=> modify('j6matin', index)} checked={el.j6matin} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j6midi} />
+                                            <input type="checkbox"  onChange={(e)=> modify('j6midi', index)} checked={el.j6midi} />
                                             </td>
                                             <td>
-                                            <input type="checkbox" checked={el.j6soir} />
+                                            <input type="checkbox" onChange={(e)=> modify('j6soir', index)} checked={el.j6soir} />
                                             </td>
                                             
                                         </tr>
                                     </td>
-                                    <button onClick={()=>handleDeleteAdd(index)}>X</button>
+                                    <button style={{cursor: 'pointer', backgroundColor: 'rgb(200,0,0)', border: 'none'}} onClick={()=>handleDeleteAdd(index)}>X</button>
                                 </tr>
                             )
                         })
@@ -373,10 +383,23 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                             <td></td>
                             <td>42°</td>
                         </td>
-                        {retX(T.t42).map((el, index)=> <td key={index}>X</td>)}
                         <td>
-                            <button id='t42' onClick={(e)=>AddTemp(e)}>+</button>
-                            <button id='t42' onClick={(e)=>DelTemp(e)}>-</button>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t42', 'j1')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t42', 'j2')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t42', 'j3')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t42', 'j4')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t42', 'j5')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t42', 'j6')} />
                         </td>
                     </tr>
                     <tr>
@@ -387,11 +410,25 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                             <td></td>
                             <td>41°</td>
                         </td>
-                        {retX(T.t41).map((el, index)=> <td key={index}>X</td>)}
                         <td>
-                            <button id='t41' onClick={(e)=>AddTemp(e)}>+</button>
-                            <button id='t41' onClick={(e)=>DelTemp(e)}>-</button>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t41', 'j1')} />
                         </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t41', 'j2')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t41', 'j3')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t41', 'j4')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t41', 'j5')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t41', 'j6')} />
+                        </td>
+                        
                     </tr>
                     <tr>
                         <td>
@@ -401,10 +438,23 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                             <td>25</td>
                             <td>40°</td>
                         </td>
-                        {retX(T.t40).map((el, index)=> <td key={index}>X</td>)}
                         <td>
-                            <button id='t40' onClick={(e)=>AddTemp(e)}>+</button>
-                            <button id='t40' onClick={(e)=>DelTemp(e)}>-</button>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t40', 'j1')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t40', 'j2')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t40', 'j3')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t40', 'j4')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t40', 'j5')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t40', 'j6')} />
                         </td>
                     </tr>
                     <tr>
@@ -415,10 +465,23 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                             <td>20</td>
                             <td>39°</td>
                         </td>
-                        {retX(T.t39).map((el, index)=> <td key={index}>X</td>)}
                         <td>
-                            <button id='t39' onClick={(e)=>AddTemp(e)}>+</button>
-                            <button id='t39' onClick={(e)=>DelTemp(e)}>-</button>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t39', 'j1')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t39', 'j2')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t39', 'j3')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t39', 'j4')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t39', 'j5')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t39', 'j6')} />
                         </td>
                     </tr>
                     <tr>
@@ -429,10 +492,23 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                             <td>15</td>
                             <td>38°</td>
                         </td>
-                        {retX(T.t38).map((el, index)=> <td key={index}>X</td>)}
                         <td>
-                            <button id='t38' onClick={(e)=>AddTemp(e)}>+</button>
-                            <button id='t38' onClick={(e)=>DelTemp(e)}>-</button>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t38', 'j1')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t38', 'j2')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t38', 'j3')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t38', 'j4')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t38', 'j5')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t38', 'j6')} />
                         </td>
                     </tr>
                     <tr>
@@ -445,8 +521,22 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                         </td>
                         {retX(T.t37).map((el, index)=> <td key={index}>X</td>)}
                         <td>
-                            <button id='t37' onClick={(e)=>AddTemp(e)}>+</button>
-                            <button id='t37' onClick={(e)=>DelTemp(e)}>-</button>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t37', 'j1')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t37', 'j2')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t37', 'j3')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t37', 'j4')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t37', 'j5')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t37', 'j6')} />
                         </td>
                     </tr>
                     <tr>
@@ -457,12 +547,23 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                             <td>5</td>
                             <td>36°</td>
                         </td>
-                        {
-                            retX(T.t36).map((el, index)=> <td key={index}>X</td>)
-                        }
                         <td>
-                            <button id='t36' onClick={(e)=>AddTemp(e)}>+</button>
-                            <button id='t36' onClick={(e)=>DelTemp(e)}>-</button>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t36', 'j1')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t36', 'j2')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t36', 'j3')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t36', 'j4')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t36', 'j5')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t36', 'j6')} />
                         </td>
                     </tr>
                     <tr>
@@ -473,13 +574,23 @@ const Infirmiere = ({idPatient, printIF, closeIF, namePatient, lastNamePatient, 
                             <td></td>
                             <td>35°</td>
                         </td>
-                        {
-                            retX(T.t35).map((el, index)=> <td key={index}>X</td>)
-                            
-                        }
                         <td>
-                            <button id='t35' onClick={(e)=>AddTemp(e)}>+</button>
-                            <button id='t35' onClick={(e)=>DelTemp(e)}>-</button>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t35', 'j1')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t35', 'j2')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t35', 'j3')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t35', 'j4')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t35', 'j5')} />
+                        </td>
+                        <td>
+                            <input type="checkbox" onChange={(e)=> modifyTemp('t35', 'j6')} />
                         </td>
                     </tr>
                     <tr>

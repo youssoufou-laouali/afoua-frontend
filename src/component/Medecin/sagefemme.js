@@ -36,7 +36,7 @@ const Medecin = () => {
             handleLogOut()
         }
         if(currentUser.currentUser.post !== 'sagefemme' && currentUser.currentUser.post !== 'gynecologue' && currentUser.currentUser.post !== 'superAdmin'){
-            history.push('/')
+            history.push('/medecin')
         }
     }, [])
 

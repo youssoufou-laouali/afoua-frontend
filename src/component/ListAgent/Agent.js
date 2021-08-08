@@ -48,10 +48,11 @@ const Agent = ({name, lastName, phone, post, email, id}) => {
 
     const disableAgent= ()=>{
         dispatch(loadingTrue())
-        axios.post('/api/agent/delete', {id})
+        axios.post('/api/agent/delete', {id, post})
         .then(user=>{
           dispatch(loadingFalse())
          console.log(user)  
+         window.location.reload(false);
          toast('le compte de '+ name + ' est désormais desactivé', {
             position: "top-right",
             autoClose: 5000,
@@ -97,7 +98,7 @@ const Agent = ({name, lastName, phone, post, email, id}) => {
                         <button onClick={()=>ResetPassword()}> Restaurer son mot de passe</button>
                     </div>
                     <div>
-                        <button onClick={()=> disableAgent()} > Désactivé cet Agent</button>
+                        <button onClick={()=> disableAgent()} > {(post.charAt(0) == '_') ? ('Activer cet Agent'):('Désactivé cet Agent')}</button>
                     </div>
                     
                 </div>

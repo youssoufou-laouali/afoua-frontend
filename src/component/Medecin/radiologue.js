@@ -33,7 +33,7 @@ const Medecin = () => {
             handleLogOut()
         }
         if(currentUser.currentUser.post !== 'radiologue' && currentUser.currentUser.post !== 'superAdmin'){
-            history.push('/')
+            history.push('/medecin')
         }
     }, [])
 

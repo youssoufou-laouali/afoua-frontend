@@ -29,7 +29,7 @@ const Medecin = () => {
             handleLogOut()
         }
         if(currentUser.currentUser.post != 'laboratoire' && currentUser.currentUser.post != 'superAdmin'){
-            history.push('/')
+            history.push('/medecin')
         }
     }, [])
 
@@ -40,20 +40,35 @@ const Medecin = () => {
         }
     }, [currentUser, history])
 
-    const [Examen, setExamen] = useState([])
+    const [Examen, setExamen] = useState({})
     const loadExamen= (id)=>{
-        axios.post('/bulletinexamen', {id})
+        axios.post('/bulletinexamen/one', {id})
         .then(res=>{
             setExamen(res.data)
+            setProductsExam(res.data.data)
         })
         .catch(errors=> console.log(errors))
     }
 
-    const skipToLabo= async ()=> {
-        axios.post('api/accueil/infirmiere', {id: patientSelect.accueil, post:'laboratoire'})
-        .then(res=>{
-            setExamen([])
-            getGeant()
+    const skipToEmet= async ()=> {
+        if(!Examen._id) return;
+        axios.post('api/agent/one', {id: Examen.createdBy})
+        .then(response=> {
+            if(!response.data) return;
+            axios.post('api/accueil/infirmiere', {id: patientSelect.accueil, post:response.data.post})
+            .then(res=>{
+                console.log(res);
+                setExamen({})
+                setPatient({
+                    name:'', lastName: '',
+                    phone: 0, dateDeNaissance:'',
+                    lieuDeNaissance: '', adresse: '', id: ''
+                })
+                setPatientSelect({demande: []})
+                socket.emit("perception", res.data)
+                getGeant()
+            })
+            .catch(errors=> console.log(errors))
         })
         .catch(errors=> console.log(errors))
     }
@@ -97,21 +112,6 @@ const Medecin = () => {
         })
     }, [])
 
-    const searchFiche=()=>{
-        axios.post('/bulletinexamen', {id: patientSelect.patientId})
-        .then(response=> {
-            console.log(response);
-        })
-        .catch(err=> {
-            console.log(err);
-        })
-    }
-
-    useEffect(() => {
-        setProductsExam(patientSelect.demande);
-        searchFiche()
-    }, [patientSelect])
-
     const [updatePatient, setUpdatePatient] = useState(false)
     const [patient, setPatient] = useState({
         name:'', lastName: '',
@@ -122,8 +122,8 @@ const Medecin = () => {
         setUpdatePatient(!updatePatient)
     }
 
-    const handlePatient=({idGeant, demande, accueil, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
-        setPatientSelect({idGeant, demande, accueil, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
+    const handlePatient=({idGeant, demande, idSup, accueil, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})=>{
+        setPatientSelect({idGeant, demande, idSup, accueil, patientName, patientLastName, adresse, patientPhone, patientId, module, dateDeNaissance, lieuDeNaissance})
         const date= new Date(dateDeNaissance)
         let j = date.getDate()
         let m= date.getMonth()+1
@@ -144,10 +144,15 @@ const Medecin = () => {
             type: 'success'
             })
         updatingPatient()
-        loadExamen(patientId)
+        console.log(idSup);
+        if(idSup) loadExamen(idSup)
+        else {
+            setExamen({})
+            setProductsExam([])
+        }
     }
 
-    const [productsExam, setProductsExam] = useState(patientSelect.demande)
+    const [productsExam, setProductsExam] = useState([])
     const handleProductsExam=(e)=>{
         console.log(e);
         const tab = productsExam.map((el, index)=> {
@@ -156,11 +161,6 @@ const Medecin = () => {
         setProductsExam(tab)
         console.log(tab);
     }
-    /*
-    const handleDeleteExam= (i)=>{
-        let a = productsExam.filter((el, index)=> index !==i )
-        setProductsExam(a)
-    }*/
 
     return (
         <div style={{display: 'flex'}}>
@@ -183,6 +183,7 @@ const Medecin = () => {
                                 dateDeNaissance={el.geant.patient.dateDeNaissance ? el.geant.patient.dateDeNaissance : ''}
                                 lieuDeNaissance={el.geant.patient.lieuDeNaissance ? el.geant.patient.lieuDeNaissance : ''}
                                 accueil={el.geant._id}
+                                idSup= {el.geant.idSup}
                             />
                            )
                         )
@@ -194,7 +195,7 @@ const Medecin = () => {
                         <h4>Bulletin d'Examen</h4>
                     <div>
                         {
-                            (patientSelect.demande.length !== 0) && (
+                            (Examen && Examen._id) && (
                                 <div style={{backgroundColor: 'black'}}>
                                     <BilletinExamen
                                         namePatient={patient.name}
@@ -205,14 +206,15 @@ const Medecin = () => {
                                         nameAgent={nameAgent}
                                         lastNameAgent={lastNameAgent}
                                         handleProductsExam={handleProductsExam}
+                                        idUpdate={patientSelect.idSup}
                                     />
                                 </div>)
                             }
                     </div>
                     {
-                        Examen.length > 0 && (
-                        <div className="envoyerBTN" onClick={()=> skipToLabo()}>
-                            <h5>Envoyer au Laboratoire</h5>
+                        (Examen && Examen._id) && (
+                        <div className="envoyerBTN" onClick={()=> skipToEmet()}>
+                            <h5>Renvoyer le resultat au médecin émetteur</h5>
                         </div>)
                     }
             </div>

@@ -6,7 +6,7 @@ import {useSelector, useDispatch} from 'react-redux'
 import { loadingTrue, loadingFalse } from "../../../redux/LogIn/action";
 import { socket } from '../../Header'
 
-const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissance, idPatient, closeBilExam, printBilExam, handleProductsExam, productsExam, handleDelete, handleDeleteResponse}) => {
+const CompteRenduHospitalisation = ({namePatient, lastNamePatient, idUpdate, dateDeNaissance, idPatient, closeBilExam, printBilExam, handleProductsExam, productsExam, handleDelete, handleDeleteResponse}) => {
     const date= new Date()
     const dispatch = useDispatch()
 
@@ -30,13 +30,16 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissan
 
     const handleUpdate=()=> {
         dispatch(loadingTrue())
-        axios.post('/bulletinexamen/update', { data: productsExam})
+        console.log(productsExam, idUpdate);
+        axios.post('/bulletinexamen/update', { id: idUpdate, data: productsExam})
         .then(res=> {
             dispatch(loadingFalse())
-            printBilExam()
+            //printBilExam()
+            console.log(res);
         })
         .catch(err=>{
             dispatch(loadingFalse())
+            console.log(err);
         })
     }
     const handleSubmit=()=>{
@@ -66,6 +69,11 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissan
 
     const [indexResponse, setIndexResponse] = useState(null)
     const handleIndexLabo = (index)=> {
+        let resp= ''
+        productsExam.map((el, i)=> {
+            if(index==i) resp = el.response;
+        })
+        setResponseInd(resp);
         setIndexResponse(index);
     }
     const [responseInd, setResponseInd] = useState('')
@@ -74,7 +82,6 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissan
     }
 
     const handleAddResponse=()=>{
-        console.log(indexResponse);
         handleProductsExam({response: responseInd, index: indexResponse})
         setResponseInd('');
         setIndexResponse(null)
@@ -95,7 +102,7 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissan
                 {
                 (agent.currentUser.post !== 'infirmiere' && agent.currentUser.post !== 'laboratoire') && (
                     <>
-                    <label>Produit</label>
+                    <label>Demande</label>
                     <div className="inputAnimated">
                         <select value={currentProduct.label || ''} onChange={(e)=>handleChangeProduct(e)}>
                             <option value="" key="">AUCUN</option>
@@ -172,13 +179,6 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissan
                                                 el.response
                                             }
                                         </td>
-                                            {
-                                                (agent.currentUser.post == 'laboratoire') && (
-                                                    <td>
-                                                        <button style={{height: 50}} onClick={()=>handleDeleteResponse(index)} >supprimer</button>
-                                                    </td>
-                                                )
-                                            }
                                     </tr>
                                         )
                                     })
@@ -198,7 +198,7 @@ const CompteRenduHospitalisation = ({namePatient, lastNamePatient, dateDeNaissan
                    )
                 }
                 {
-                   (agent.currentUser.post == 'laboratoire')  && (
+                   (agent.currentUser.post == 'laboratoire' || agent.currentUser.post == 'superAdmin')  && (
                     <button className="submitA4" onClick={()=>handleUpdate()}>Enregistrer</button>
                    )
                 }

@@ -33,7 +33,7 @@ const Medecin = () => {
             handleLogOut()
         }
         if(currentUser.currentUser.post != 'infirmiere' && currentUser.currentUser.post != 'superAdmin'){
-            history.push('/')
+            history.push('/medecin')
         }
     }, [])
 
@@ -85,7 +85,14 @@ const Medecin = () => {
         axios.post('api/accueil/infirmiere', {id: patientSelect.accueil, post:'laboratoire'})
         .then(res=>{
             setExamen([])
+            setPatient({
+                name:'', lastName: '',
+                phone: 0, dateDeNaissance:'',
+                lieuDeNaissance: '', adresse: '', id: ''
+            })
+            setPatientSelect({demande: []})
             getGeant()
+            socket.emit("perception", res.data)
         })
         .catch(errors=> console.log(errors))
     }
@@ -171,6 +178,7 @@ const Medecin = () => {
         updatingPatient()
         loadDossierMedical(patientId)
         if(idSup) loadExamen(idSup)
+        else setExamen({})
     }
 
     return (
@@ -213,11 +221,13 @@ const Medecin = () => {
             </div>
             <div style={{textAlign: 'center', minWidth:'60vw'}}>
                     <h3>{patient.name + ' ' + patient.lastName}</h3>
-                    <h4>Dossier Medical</h4>
                     <div>
                         {
                             DossierMedicals.length !== 0 && (
+                                <>
+                                <h4>Dossier Medical</h4>
                                 <div style={{backgroundColor: 'black'}}>
+                                    
                                     <PrintDossier
                                         namePatient={patient.name}
                                         lastNamePatient= {patient.lastName}
@@ -227,14 +237,16 @@ const Medecin = () => {
                                         lastNameAgent={lastNameAgent}
                                         Examens={DossierMedicals[DossierMedicals.length - 1].examensUlterieurs}
                                     />
-                                </div>)
+                                </div>
+                                </>)
                             }
                     </div>
 
-                        <h4>Bulletin d'Examen</h4>
                     <div>
                         {
                             (Examen && Examen._id) && (
+                                <>
+                                <h4>Bulletin d'Examen</h4>
                                 <div style={{backgroundColor: 'black'}}>
                                     <PrintBilletinExamen
                                         namePatient={patient.name}
@@ -244,7 +256,8 @@ const Medecin = () => {
                                         nameAgent={nameAgent}
                                         lastNameAgent={lastNameAgent}
                                     />
-                                </div>)
+                                </div>
+                                </>)
                             }
                     </div>
                     {

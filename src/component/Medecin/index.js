@@ -62,7 +62,11 @@ const Medecin = () => {
         if(currentUser.currentUser.exp*1000 <= Date.now()){
             handleLogOut()
         }
-        
+        const postMedecin = currentUser.currentUser.post
+        const specialistes= ['superAdmin', 'generaliste', 'gynecologue', 'pediatre', 'optalmologue', ]
+        if(!specialistes.includes(postMedecin)){
+            history.push('/' + postMedecin)
+        }
     }, [])
 
 
@@ -536,13 +540,19 @@ En conséquence, le (la) susnommé (e) est apte`)
                             <li onClick={()=>closing()}>Certificat De Visite Medicale</li>
                             <li onClick={()=>closingCVCVM()}>Certificat De Visite et Contre Visite Medicale</li>
                             <li onClick={()=>closingCM()}>Certificat Medical</li>
-                            <li onClick={()=>closingCG()}>Certificat de Grossesse</li>
-                            <li onClick={()=>closingCA()}>Certificat D'Accouchement</li>
+                            {
+                                currentUser.currentUser.post == 'gynecologue' && (
+                                    <>
+                                        <li onClick={()=>closingCG()}>Certificat de Grossesse</li>
+                                        <li onClick={()=>closingCA()}>Certificat D'Accouchement</li>
+                                        <li onClick={()=>closingCRA()}>Compte Rendu D'Accouchement</li>
+                                    </>
+                                )
+                            }
                             <li onClick={()=>closingConG()}>Consultation médecin Générale</li>
-                            <li onClick={()=>closingDecharge()} >Decharge</li>
                             <li onClick={()=>closingCRH()}>Compte Rendu D'Hospitalisation</li>
-                            <li onClick={()=>closingCRA()}>Compte Rendu D'Accouchement</li>
                             <li onClick={()=>closingCP()}>Consultation Pédiatrique</li>
+                            <li onClick={()=>closingDecharge()} >Decharge</li>
                             <li onClick={()=>closingDM()}>Dossier Médical</li>
                             <li onClick={()=>closingI()}>Imagerie</li>
                             <li onClick={()=>closingSEU()}>Soins en Urgence</li>
