@@ -222,7 +222,24 @@ class PrintInfirmiere extends Component {
                             <td></td>
                             <td>42°</td>
                         </td>
-                        {this.retX(data.t42).map((el, index)=> <td key={index}>X</td>)}
+                        <td>
+                            <input type="checkbox" checked={data?.t42.j1} />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t42.j2}/>
+                        </td>
+                        <td>
+                            <input type="checkbox"checked={data?.t42.j3}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t42.j4}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t42.j5}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t42.j6}/>
+                        </td>
                         
                     </tr>
                     <tr>
@@ -233,8 +250,24 @@ class PrintInfirmiere extends Component {
                             <td></td>
                             <td>41°</td>
                         </td>
-                        {this.retX(data.t41).map((el, index)=> <td key={index}>X</td>)}
-                        
+                        <td>
+                            <input type="checkbox" checked={data?.t41.j1} />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t41.j2}/>
+                        </td>
+                        <td>
+                            <input type="checkbox"checked={data?.t41.j3}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t41.j4}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t41.j5}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t41.j6}/>
+                        </td>
                     </tr>
                     <tr>
                         <td>
@@ -244,7 +277,24 @@ class PrintInfirmiere extends Component {
                             <td>25</td>
                             <td>40°</td>
                         </td>
-                        {this.retX(data.t40).map((el, index)=> <td key={index}>X</td>)}
+                        <td>
+                            <input type="checkbox" checked={data?.t40.j1} />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t40.j2}/>
+                        </td>
+                        <td>
+                            <input type="checkbox"checked={data?.t40.j3}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t40.j4}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t40.j5}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t40.j6}/>
+                        </td>
                        
                     </tr>
                     <tr>
@@ -255,7 +305,24 @@ class PrintInfirmiere extends Component {
                             <td>20</td>
                             <td>39°</td>
                         </td>
-                        {this.retX(data.t39).map((el, index)=> <td key={index}>X</td>)}
+                        <td>
+                            <input type="checkbox" checked={data?.t39.j1} />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t39.j2}/>
+                        </td>
+                        <td>
+                            <input type="checkbox"checked={data?.t39.j3}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t39.j4}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t39.j5}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t39.j6}/>
+                        </td>
                         
                     </tr>
                     <tr>
@@ -266,7 +333,24 @@ class PrintInfirmiere extends Component {
                             <td>15</td>
                             <td>38°</td>
                         </td>
-                        {this.retX(data.t38).map((el, index)=> <td key={index}>X</td>)}
+                        <td>
+                            <input type="checkbox" checked={data?.t38.j1} />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t38.j2}/>
+                        </td>
+                        <td>
+                            <input type="checkbox"checked={data?.t38.j3}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t38.j4}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t38.j5}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t38.j6}/>
+                        </td>
                         
                     </tr>
                     <tr>
@@ -277,7 +361,24 @@ class PrintInfirmiere extends Component {
                             <td>10</td>
                             <td>37°</td>
                         </td>
-                        {this.retX(data.t37).map((el, index)=> <td key={index}>X</td>)}
+                        <td>
+                            <input type="checkbox" checked={data?.t37.j1} />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t37.j2}/>
+                        </td>
+                        <td>
+                            <input type="checkbox"checked={data?.t37.j3}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t37.j4}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t37.j5}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t37.j6}/>
+                        </td>
                         
                     </tr>
                     <tr>
@@ -288,9 +389,24 @@ class PrintInfirmiere extends Component {
                             <td>5</td>
                             <td>36°</td>
                         </td>
-                        {
-                            this.retX(data.t36).map((el, index)=> <td key={index}>X</td>)
-                        }
+                        <td>
+                            <input type="checkbox" checked={data?.t36.j1} />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t36.j2}/>
+                        </td>
+                        <td>
+                            <input type="checkbox"checked={data?.t36.j3}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t36.j4}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t36.j5}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t36.j6}/>
+                        </td>
                         
                     </tr>
                     <tr>
@@ -301,10 +417,24 @@ class PrintInfirmiere extends Component {
                             <td></td>
                             <td>35°</td>
                         </td>
-                        {
-                            this.retX(data.t35).map((el, index)=> <td key={index}>X</td>)
-                            
-                        }
+                        <td>
+                            <input type="checkbox" checked={data?.t35.j1} />
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t35.j2}/>
+                        </td>
+                        <td>
+                            <input type="checkbox"checked={data?.t35.j3}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t35.j4}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t35.j5}/>
+                        </td>
+                        <td>
+                            <input type="checkbox" checked={data?.t35.j6}/>
+                        </td>
                        
                     </tr>
                     <tr>
